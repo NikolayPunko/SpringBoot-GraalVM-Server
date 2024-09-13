@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(HttpMethod.POST, "api/authentication/authenticate").permitAll()
                                 .requestMatchers(HttpMethod.POST, "api/authentication/registration").permitAll()
-                                .requestMatchers(HttpMethod.GET, "api/runzap").permitAll()
+//                                .requestMatchers(HttpMethod.GET, "api/runzap").permitAll()
                                 .anyRequest().permitAll()
                 )
 
