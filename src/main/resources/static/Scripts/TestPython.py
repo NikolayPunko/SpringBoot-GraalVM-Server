@@ -1,6 +1,6 @@
 
 import java
-Person = java.type("com.example.SpringTestGraalVM.model.Person")
+Person = java.type("com.host.SpringBootGraalVMServer.model.Person")
 
 class ConnectorImpl:
     @staticmethod
