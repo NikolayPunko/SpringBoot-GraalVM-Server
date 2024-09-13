@@ -18,7 +18,7 @@ public class PythonConfiguration {
     public static void assignSource(){ //метод для обновления скрипта без перезагрузки приложения
         try {
             sourceFile1 = Source
-                    .newBuilder("python", new File("classpath:static/Scripts/TestPython.py"))
+                    .newBuilder("python", new File("/projects/graalvm_srv/SpringBoot-GraalVM-Server/src/main/resources/static/Scripts/TestPython.py"))
                     .build();
         } catch (IOException e) {
             System.out.println("===Script not found!===");
