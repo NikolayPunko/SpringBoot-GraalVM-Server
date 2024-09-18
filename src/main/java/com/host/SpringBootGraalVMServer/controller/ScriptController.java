@@ -46,10 +46,10 @@ public class ScriptController {
     }
 
 
-    @GetMapping("/method3")
-    public String testMethod3() {
-        return scriptServiceTest.getMethod3();
-    }
+//    @GetMapping("/method3")
+//    public String testMethod3() {
+//        return scriptServiceTest.getMethod3();
+//    }
 
     @GetMapping("/method4")
     public Person testMethod4() {

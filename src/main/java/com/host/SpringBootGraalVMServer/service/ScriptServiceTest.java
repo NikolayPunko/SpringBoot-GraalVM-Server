@@ -23,9 +23,9 @@ public class ScriptServiceTest {
         return result;
     }
 
-    public String getMethod3() {
+    public String getMethod3(Person person) {
         ScriptContext context = ContextPool.borrowContext();
-        String result = PythonConfiguration.getPythonServiceTest(context).testMethod_3(new Person("Ivan", 35));
+        String result = PythonConfiguration.getPythonServiceTest(context).testMethod_3(person);
         ContextPool.returnContext(context);
         return result;
     }
