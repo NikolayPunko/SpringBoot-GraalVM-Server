@@ -24,11 +24,21 @@ public class TestController {
     }
 
     @PostMapping(value = "/**")
-    public String handlePostRequests(HttpServletRequest request, @RequestBody Person person) {
+    public String handlePostRequests(HttpServletRequest request,
+                                     @RequestBody Person person) {
+
         System.out.println(request.getRequestURL());
+
+        String requestURI = request.getRequestURI(); // Получаем полный URI
+        String contextPath = request.getContextPath(); // Получаем контекстный путь
+        String partOfUrl = requestURI.substring(contextPath.length()); // Получаем часть URL после хоста
+
+        System.out.println(requestURI);
+        System.out.println(partOfUrl);
+
         System.out.println("POST request intercepted!");
 
-        return "POST request intercepted!" + scriptServiceTest.getMethod3(person);
+        return "POST request intercepted!";
     }
 
 

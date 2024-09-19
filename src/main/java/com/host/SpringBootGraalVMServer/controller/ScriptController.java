@@ -1,15 +1,15 @@
 package com.host.SpringBootGraalVMServer.controller;
 
+import com.host.SpringBootGraalVMServer.dto.NewScriptDTO;
 import com.host.SpringBootGraalVMServer.model.Person;
 import com.host.SpringBootGraalVMServer.model.ScriptPayload;
 import com.host.SpringBootGraalVMServer.scriptConfiguration.PythonConfiguration;
+import com.host.SpringBootGraalVMServer.service.FileService;
 import com.host.SpringBootGraalVMServer.service.ScriptService;
 import com.host.SpringBootGraalVMServer.service.ScriptServiceTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -17,11 +17,13 @@ public class ScriptController {
 
     private final ScriptServiceTest scriptServiceTest;
     private final ScriptService scriptService;
+    private final FileService fileService;
 
     @Autowired
-    public ScriptController(ScriptServiceTest scriptServiceTest, ScriptService scriptService) {
+    public ScriptController(ScriptServiceTest scriptServiceTest, ScriptService scriptService, FileService fileService) {
         this.scriptServiceTest = scriptServiceTest;
         this.scriptService = scriptService;
+        this.fileService = fileService;
     }
 
     @GetMapping("/runzap")
@@ -35,25 +37,17 @@ public class ScriptController {
         PythonConfiguration.assignSource();
     }
 
-    @GetMapping("/method1")
-    public int testMethod1() {
-        return scriptServiceTest.getMethod1();
+    @PostMapping("/setform")
+    public ResponseEntity<?> addScriptFile(@RequestBody NewScriptDTO newScriptDTO){
+        try {
+            fileService.addScriptFile(newScriptDTO);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Ошибка добавления скрипта!");
+        }
+        return ResponseEntity.ok("Скрипт добавлен!");
     }
 
-    @GetMapping("/method2")
-    public String testMethod2() {
-        return scriptServiceTest.getMethod2();
-    }
 
 
-//    @GetMapping("/method3")
-//    public String testMethod3() {
-//        return scriptServiceTest.getMethod3();
-//    }
-
-    @GetMapping("/method4")
-    public Person testMethod4() {
-        return scriptServiceTest.getMethod4();
-    }
 
 }
