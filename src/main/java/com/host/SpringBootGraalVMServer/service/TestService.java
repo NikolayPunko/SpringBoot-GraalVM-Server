@@ -1,5 +1,7 @@
 package com.host.SpringBootGraalVMServer.service;
 
+import com.host.SpringBootGraalVMServer.model.Person;
+import com.host.SpringBootGraalVMServer.model.ScriptPayload;
 import lombok.extern.slf4j.Slf4j;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
@@ -26,8 +28,9 @@ public class TestService {
 
             context.eval(sourceFile1);
 
-            Value function = context.getBindings("python").getMember("my_function"); //выбираем метод который нужен
-            String result = function.execute(12, "аргумент2").asString(); //выполняем
+//            context.getBindings("python").putMember("zap", new ScriptPayload("req", "resp", "connection"));
+            Value function = context.getBindings("python").getMember("main"); //выбираем метод который нужен
+            String result = function.execute(new ScriptPayload("req", "resp", "connection")).asString(); //выполняем
             System.out.println("Результат: " + result);
 
             return "Результат: " + result;

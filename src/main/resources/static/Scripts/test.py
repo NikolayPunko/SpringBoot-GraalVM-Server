@@ -1,3 +1,3 @@
-def my_function(param1, param2):
-    return f"Received: {param1} and {param2}"
-
+def main(zap):
+    zap.setResponse(zap.getRequest());
+    return zap
