@@ -2,7 +2,7 @@ package com.host.SpringBootGraalVMServer.controller;
 
 import com.host.SpringBootGraalVMServer.model.Person;
 import com.host.SpringBootGraalVMServer.service.ScriptServiceTest;
-import com.host.SpringBootGraalVMServer.service.TestService;
+import com.host.SpringBootGraalVMServer.service.Test2Service;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 public class TestController {
 
     private final ScriptServiceTest scriptServiceTest;
-    private final TestService testService;
+    private final Test2Service test2Service;
 
     @Autowired
-    public TestController(ScriptServiceTest scriptServiceTest, TestService testService) {
+    public TestController(ScriptServiceTest scriptServiceTest, Test2Service test2Service) {
         this.scriptServiceTest = scriptServiceTest;
-        this.testService = testService;
+        this.test2Service = test2Service;
     }
 
     @GetMapping(value = "/**")
@@ -47,7 +47,7 @@ public class TestController {
 
     @GetMapping(value = "/test")
     public String test() {
-        return testService.runScript();
+        return test2Service.runScript();
     }
 
 
