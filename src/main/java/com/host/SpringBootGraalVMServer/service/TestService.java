@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.Value;
+import org.graalvm.polyglot.proxy.ProxyObject;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -40,7 +41,7 @@ public class TestService {
             e.printStackTrace();
             return "Ошибка" + e.toString();
         }
-    }
+//    }
 
 
 
