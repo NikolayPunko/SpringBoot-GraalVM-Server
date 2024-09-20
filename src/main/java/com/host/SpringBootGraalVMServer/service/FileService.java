@@ -13,7 +13,7 @@ import java.util.Base64;
 @Service
 public class FileService {
 
-    private final String FILE_DIRECTORY = "src/main/resources/static/Scripts/";
+    private final String FILE_DIRECTORY = "src/main/resources/static/Scripts/"; //поменять путь под linux!!!
 
     public void addScriptFile(NewScriptDTO newScript) throws IOException {
 

@@ -6,6 +6,6 @@ public interface PythonService {
 
     ScriptPayload getmark(ScriptPayload payload);
 
-
     void pythonConstructor();
+
 }

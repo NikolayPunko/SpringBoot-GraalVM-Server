@@ -1,5 +1,6 @@
 package com.host.SpringBootGraalVMServer;
 
+import com.host.SpringBootGraalVMServer.service.TestService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,6 +9,7 @@ public class SpringBootGraalVmServerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootGraalVmServerApplication.class, args);
+
 	}
 
 }
