@@ -34,7 +34,7 @@ public class Test2Service {
         try {
 
 
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 10000; i++) {
                 Source sourceFile1 = Source
                         .newBuilder("python", new File("/projects/graalvm_srv/SpringBoot-GraalVM-Server/src/main/resources/static/Scripts/test.py"))
                         .build();
@@ -44,7 +44,7 @@ public class Test2Service {
             }
             long finish = System.currentTimeMillis();
 
-            return "Результат многократной компиляции: " + (finish - start);
+            return "Результат многократной компиляции (цикл 10000): " + (finish - start);
         }
         catch(IOException e) {
             log.error(e.toString());
@@ -73,7 +73,7 @@ public class Test2Service {
 
             context.eval(sourceFile1);
 
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 10000; i++) {
 
                 Value function = context.getBindings("python").getMember("main"); //выбираем метод который нужен
                 ScriptPayload result = function.execute(new ScriptPayload("req", "resp", "connection")).as(ScriptPayload.class); //выполняем
@@ -82,7 +82,7 @@ public class Test2Service {
 
             long finish = System.currentTimeMillis();
 
-            return "Результат компиляции 1 раз: " + (finish - start);
+            return "Результат компиляции 1 раз (цикл 10000): " + (finish - start);
         }
         catch(IOException e) {
             log.error(e.toString());
