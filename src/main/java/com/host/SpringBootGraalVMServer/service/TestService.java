@@ -3,9 +3,7 @@ package com.host.SpringBootGraalVMServer.service;
 import com.host.SpringBootGraalVMServer.model.Person;
 import com.host.SpringBootGraalVMServer.model.ScriptPayload;
 import lombok.extern.slf4j.Slf4j;
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Source;
-import org.graalvm.polyglot.Value;
+import org.graalvm.polyglot.*;
 import org.graalvm.polyglot.proxy.ProxyObject;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,12 @@ public class TestService {
 
 
     public String runScript(){
-        Context context = Context.create("python");
+        Context context = Context.newBuilder("python")
+                .allowHostAccess(HostAccess.ALL)
+                .allowAllAccess(true)
+                .option("python.ForceImportSite", "true")
+                .engine(Engine.create())
+                .build();;
         try
 
         {
@@ -41,7 +44,7 @@ public class TestService {
             e.printStackTrace();
             return "Ошибка" + e.toString();
         }
-//    }
+    }
 
 
 
