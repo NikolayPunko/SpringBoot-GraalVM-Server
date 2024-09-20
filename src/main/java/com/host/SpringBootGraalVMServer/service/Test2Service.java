@@ -16,40 +16,121 @@ public class Test2Service {
 
 
     public String runScript(){
+        return runScript1() +"\n" + runScript2();
+    }
 
-        ScriptContext scriptContext = ContextPool.borrowContext();
-        Context context = scriptContext.getContext();
+    public String runScript1(){
 
-//        Context context = Context.newBuilder("python")
-//                .allowHostAccess(HostAccess.ALL)
-//                .allowAllAccess(true)
-//                .option("python.ForceImportSite", "true")
-//                .engine(Engine.create())
-//                .build();;
-        try
+        long start = System.currentTimeMillis();
 
-        {
+        Context context = Context.newBuilder("python")
+                .allowHostAccess(HostAccess.ALL)
+                .allowAllAccess(true)
+                .option("python.ForceImportSite", "true")
+                .engine(Engine.create())
+                .build();
+
+
+        try {
+
+
+            for (int i = 0; i < 1000; i++) {
+                Source sourceFile1 = Source
+                        .newBuilder("python", new File("/projects/graalvm_srv/SpringBoot-GraalVM-Server/src/main/resources/static/Scripts/test.py"))
+                        .build();
+                context.eval(sourceFile1);
+                Value function = context.getBindings("python").getMember("main"); //выбираем метод который нужен
+                ScriptPayload result = function.execute(new ScriptPayload("req", "resp", "connection")).as(ScriptPayload.class); //выполняем
+            }
+            long finish = System.currentTimeMillis();
+
+            return "Результат многократной компиляции: " + (finish - start);
+        }
+        catch(IOException e) {
+            log.error(e.toString());
+            e.printStackTrace();
+            return "Ошибка" + e.toString();
+        }
+    }
+
+    public String runScript2(){
+
+        long start = System.currentTimeMillis();
+
+        Context context = Context.newBuilder("python")
+                .allowHostAccess(HostAccess.ALL)
+                .allowAllAccess(true)
+                .option("python.ForceImportSite", "true")
+                .engine(Engine.create())
+                .build();
+
+
+        try {
+
             Source sourceFile1 = Source
                     .newBuilder("python", new File("/projects/graalvm_srv/SpringBoot-GraalVM-Server/src/main/resources/static/Scripts/test.py"))
                     .build();
 
             context.eval(sourceFile1);
 
-//            context.getBindings("python").putMember("zap", new ScriptPayload("req", "resp", "connection"));
-            Value function = context.getBindings("python").getMember("main"); //выбираем метод который нужен
-            ScriptPayload result = function.execute(new ScriptPayload("req", "resp", "connection")).as(ScriptPayload.class); //выполняем
-            System.out.println("Результат: " + result.toString());
+            for (int i = 0; i < 1000; i++) {
 
-            return "Результат: " + result;
+                Value function = context.getBindings("python").getMember("main"); //выбираем метод который нужен
+                ScriptPayload result = function.execute(new ScriptPayload("req", "resp", "connection")).as(ScriptPayload.class); //выполняем
+
+            }
+
+            long finish = System.currentTimeMillis();
+
+            return "Результат компиляции 1 раз: " + (finish - start);
         }
         catch(IOException e) {
             log.error(e.toString());
             e.printStackTrace();
             return "Ошибка" + e.toString();
-        } finally {
-            ContextPool.returnContext(scriptContext);
         }
     }
+
+
+
+
+
+
+//    public String runScript(){
+//
+//        ScriptContext scriptContext = ContextPool.borrowContext();
+//        Context context = scriptContext.getContext();
+//
+////        Context context = Context.newBuilder("python")
+////                .allowHostAccess(HostAccess.ALL)
+////                .allowAllAccess(true)
+////                .option("python.ForceImportSite", "true")
+////                .engine(Engine.create())
+////                .build();;
+//        try
+//
+//        {
+//            Source sourceFile1 = Source
+//                    .newBuilder("python", new File("/projects/graalvm_srv/SpringBoot-GraalVM-Server/src/main/resources/static/Scripts/test.py"))
+//                    .build();
+//
+//            context.eval(sourceFile1);
+//
+////            context.getBindings("python").putMember("zap", new ScriptPayload("req", "resp", "connection"));
+//            Value function = context.getBindings("python").getMember("main"); //выбираем метод который нужен
+//            ScriptPayload result = function.execute(new ScriptPayload("req", "resp", "connection")).as(ScriptPayload.class); //выполняем
+//            System.out.println("Результат: " + result.toString());
+//
+//            return "Результат: " + result;
+//        }
+//        catch(IOException e) {
+//            log.error(e.toString());
+//            e.printStackTrace();
+//            return "Ошибка" + e.toString();
+//        } finally {
+//            ContextPool.returnContext(scriptContext);
+//        }
+//    }
 
 
 
