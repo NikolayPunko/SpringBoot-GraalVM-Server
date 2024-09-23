@@ -7,3 +7,4 @@ def main(zap: ScriptPayload):
     connection = zap.getConnection()
     statement = connection.createStatement()
     resultSet = statement.executeQuery('SELECT * FROM BD_NASUSR')
+    return resultSet

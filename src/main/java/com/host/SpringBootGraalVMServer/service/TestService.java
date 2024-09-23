@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 @Slf4j
 @Service
@@ -94,8 +91,7 @@ public class TestService {
 
     public String transferDB(){
 
-//        ScriptContext scriptContext = ContextPool.borrowContext();
-//        Context context = scriptContext.getContext();
+
 
         Context context = Context.newBuilder("python")
                 .allowHostAccess(HostAccess.ALL)
@@ -116,20 +112,29 @@ public class TestService {
 
 
 
+
             context.eval(sourceFile1);
 
 //            context.getBindings("python").putMember("zap", new ScriptPayload("req", "resp", "connection"));
             Value function = context.getBindings("python").getMember("main"); //выбираем метод который нужен
-            ResultSet result = function.execute(new ScriptPayload("req", "resp", connection)).as(ResultSet.class); //выполняем
-            System.out.println("Результат: " + result.getString("USERNAME"));
+            ResultSet resultSet = function.execute(new ScriptPayload("req", "resp", connection)).as(ResultSet.class); //выполняем
 
-            return "Результат: " + result;
+
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("F_ID"); // ������� �� ��� ��襣� �⮫��
+                String name = resultSet.getString("USERNAME"); // ������� �� ��� ��襣� �⮫��
+                System.out.println("ID: " + id + ", Name: " + name);
+            }
+            return "Результат: " ;
+
         }
         catch (IOException e) {
             log.error(e.toString());
             e.printStackTrace();
             return "Ошибка:" + e.toString();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             log.error(e.toString());
             e.printStackTrace();
             return "Ошибка:" + e.toString();
