@@ -55,5 +55,10 @@ public class TestController {
         return testService.runScript3();
     }
 
+    @GetMapping(value = "/testDB")
+    public String testDB() {
+        return testService.transferDB();
+    }
+
 
 }
