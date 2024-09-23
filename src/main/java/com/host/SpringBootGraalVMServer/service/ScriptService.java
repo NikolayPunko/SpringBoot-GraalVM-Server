@@ -15,7 +15,7 @@ public class ScriptService {
                 new ScriptPayload(
                         "запрос",
                         "ответ",
-                        "соединение"));
+                        null));
         ContextPool.returnContext(context);
         return result;
     }
