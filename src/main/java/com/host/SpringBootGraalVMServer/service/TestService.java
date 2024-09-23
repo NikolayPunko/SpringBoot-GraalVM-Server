@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Slf4j
@@ -119,8 +120,8 @@ public class TestService {
 
 //            context.getBindings("python").putMember("zap", new ScriptPayload("req", "resp", "connection"));
             Value function = context.getBindings("python").getMember("main"); //выбираем метод который нужен
-            ScriptPayload result = function.execute(new ScriptPayload("req", "resp", connection)).as(ScriptPayload.class); //выполняем
-            System.out.println("Результат: " + result.toString());
+            ResultSet result = function.execute(new ScriptPayload("req", "resp", connection)).as(ResultSet.class); //выполняем
+            System.out.println("Результат: " + result.getString("USERNAME"));
 
             return "Результат: " + result;
         }
