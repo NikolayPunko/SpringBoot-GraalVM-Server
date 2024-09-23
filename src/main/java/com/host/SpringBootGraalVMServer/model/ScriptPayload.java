@@ -1,16 +1,13 @@
 package com.host.SpringBootGraalVMServer.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.graalvm.polyglot.HostAccess;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-
+@ToString
 public class ScriptPayload {
     @HostAccess.Export //требуется, чтобы сделать метод доступным из языка встраивания.
     String request;
