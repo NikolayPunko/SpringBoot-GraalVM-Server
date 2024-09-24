@@ -1,4 +1,6 @@
 import java
+import json
+
 ScriptPayload = java.type("com.host.SpringBootGraalVMServer.model.ScriptPayload")
 
 
@@ -7,4 +9,16 @@ def main(zap: ScriptPayload):
     connection = zap.getConnection()
     statement = connection.createStatement()
     resultSet = statement.executeQuery('SELECT * FROM BD_NASUSR')
-    return resultSet
+
+    resultSet.first()
+
+
+
+data = {
+    "F_ID":  resultSet.getInt("F_ID"),
+    "USERNAME": resultSet.getString("USERNAME")
+
+}
+json_result = json.dumps(data, default=str)
+zap.setResponse(json_result);
+return zap

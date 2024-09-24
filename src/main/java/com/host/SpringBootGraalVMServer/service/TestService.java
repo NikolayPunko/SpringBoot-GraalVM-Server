@@ -117,16 +117,17 @@ public class TestService {
 
 //            context.getBindings("python").putMember("zap", new ScriptPayload("req", "resp", "connection"));
             Value function = context.getBindings("python").getMember("main"); //выбираем метод который нужен
-            ResultSet resultSet = function.execute(new ScriptPayload("req", "resp", connection)).as(ResultSet.class); //выполняем
+//            ResultSet resultSet = function.execute(new ScriptPayload("req", "resp", connection)).as(ResultSet.class); //выполняем
+            ScriptPayload scriptPayload = function.execute(new ScriptPayload("req", "resp", connection)).as(ScriptPayload.class); //выполняем
 
 
 
-            while (resultSet.next()) {
-                int id = resultSet.getInt("F_ID"); // ������� �� ��� ��襣� �⮫��
-                String name = resultSet.getString("USERNAME"); // ������� �� ��� ��襣� �⮫��
-                System.out.println("ID: " + id + ", Name: " + name);
-            }
-            return "Результат: " ;
+//            while (resultSet.next()) {
+//                int id = resultSet.getInt("F_ID");
+//                String name = resultSet.getString("USERNAME");
+//                System.out.println("ID: " + id + ", Name: " + name);
+//            }
+            return "Результат: " + scriptPayload.getResponse();
 
         }
         catch (IOException e) {
@@ -139,9 +140,9 @@ public class TestService {
             e.printStackTrace();
             return "Ошибка:" + e.toString();
         }
-//        finally {
-//            ContextPool.returnContext(scriptContext);
-//        }
+        finally {
+            
+        }
     }
 
 
