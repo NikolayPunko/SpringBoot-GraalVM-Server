@@ -91,7 +91,7 @@ public class TestService {
 
     public String transferDB(){
 
-
+        Connection connection = null;
 
         Context context = Context.newBuilder("python")
                 .allowHostAccess(HostAccess.ALL)
@@ -106,27 +106,16 @@ public class TestService {
                     .newBuilder("python", new File("/projects/graalvm_srv/SpringBoot-GraalVM-Server/src/main/resources/static/Scripts/db.py"))
                     .build();
 
-            Connection connection = DriverManager.getConnection("jdbc:sqlserver://10.35.0.5;databaseName=naswms;encrypt=true;trustServerCertificate=true"
+            connection = DriverManager.getConnection("jdbc:sqlserver://10.35.0.5;databaseName=naswms;encrypt=true;trustServerCertificate=true"
                     , "nas"
                     , "Nas2024$");
 
 
-
-
             context.eval(sourceFile1);
 
-//            context.getBindings("python").putMember("zap", new ScriptPayload("req", "resp", "connection"));
             Value function = context.getBindings("python").getMember("main"); //выбираем метод который нужен
-//            ResultSet resultSet = function.execute(new ScriptPayload("req", "resp", connection)).as(ResultSet.class); //выполняем
             ScriptPayload scriptPayload = function.execute(new ScriptPayload("req", "resp", connection)).as(ScriptPayload.class); //выполняем
 
-
-
-//            while (resultSet.next()) {
-//                int id = resultSet.getInt("F_ID");
-//                String name = resultSet.getString("USERNAME");
-//                System.out.println("ID: " + id + ", Name: " + name);
-//            }
             return "Результат: " + scriptPayload.getResponse();
 
         }
@@ -141,7 +130,11 @@ public class TestService {
             return "Ошибка:" + e.toString();
         }
         finally {
-            
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
