@@ -12,13 +12,11 @@ def main(zap: ScriptPayload):
 
     resultSet.first()
 
+    data = {
+        "F_ID":  resultSet.getInt("F_ID"),
+        "USERNAME": resultSet.getString("USERNAME")
 
-
-data = {
-    "F_ID":  resultSet.getInt("F_ID"),
-    "USERNAME": resultSet.getString("USERNAME")
-
-}
-json_result = json.dumps(data, default=str)
-zap.setResponse(json_result);
-return zap
+    }
+    json_result = json.dumps(data, default=str)
+    zap.setResponse(json_result)
+    return zap
