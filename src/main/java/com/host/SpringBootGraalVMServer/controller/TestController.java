@@ -7,6 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+
 @ControllerAdvice
 @RestController
 public class TestController {
@@ -65,4 +70,21 @@ public class TestController {
         return testService.transferDB2();
     }
 
+    @GetMapping(value = "/testDB3")
+    public String testDB3() {
+
+        try {
+            URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new File("/projects/graalvm_srv/SpringBoot-GraalVM-Server/src/main/java/com/host/SpringBootGraalVMServer/util").toURI().toURL()});
+            Class<?> dynamicClass = classLoader.loadClass("DynamicClass");
+            Object instance = dynamicClass.getDeclaredConstructor().newInstance();
+            Method method = dynamicClass.getMethod("transferDB3", String.class); // Предполагается, что метод называется "execute"
+            String str = (String) method.invoke(instance, "jdbc:sqlserver://10.35.0.5;databaseName=naswms;encrypt=true;trustServerCertificate=true");
+            return "Метод execute() выполнен для класса: " + "DynamicClass" + "\n"+ str;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Ошибка при выполнении: " + e.getMessage();
+        }
+
+
+    }
 }
