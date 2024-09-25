@@ -13,7 +13,7 @@ def main(zap: ScriptPayload):
     result = []
     while rs.next():
         row = {}
-        for i in range(columnCount+1):
+        for i in range(columnCount):
             name = rs.getMetaData().getColumnName(i+1)
             val = rs.getString(i+1)
             row[name] = val

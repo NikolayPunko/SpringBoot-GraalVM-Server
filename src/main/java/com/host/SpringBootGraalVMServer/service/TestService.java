@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -148,7 +150,7 @@ public class TestService {
         Statement statement = null;
         ResultSet resultSet = null;
 
-        Map<Integer,TestObj> map = new HashMap<>();
+        List<String> list = new ArrayList<>();
 
         try {
             connection =  connection = DriverManager.getConnection("jdbc:sqlserver://10.35.0.5;databaseName=naswms;encrypt=true;trustServerCertificate=true"
@@ -158,10 +160,18 @@ public class TestService {
             String sql = "SELECT * FROM BD_NASUSR";
             resultSet = statement.executeQuery(sql);
 
+            int columnCount = resultSet.getMetaData().getColumnCount();
+
             while (resultSet.next()) {
-                int id = resultSet.getInt("F_ID");
-                String name = resultSet.getString("USERNAME").trim();
-                map.put(id, new TestObj(id,name));
+
+                Map<String,String> map = new HashMap<>();
+
+                for (int i = 0; i < columnCount; i++) {
+                    String col = resultSet.getMetaData().getColumnName(i+1);
+                    String val = resultSet.getString(i+1);
+                    map.put(col,val);
+                }
+                list.add(map.toString());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -173,7 +183,7 @@ public class TestService {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return map.toString();
+            return list.toString();
         }
     }
 
