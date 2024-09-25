@@ -60,7 +60,7 @@ public class TestController {
         return testService.transferDB();
     }
 
-    @GetMapping(value = "/testDB")
+    @GetMapping(value = "/testDB2")
     public String testDB2() {
         return testService.transferDB2();
     }
