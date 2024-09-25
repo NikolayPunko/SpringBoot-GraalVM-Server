@@ -160,7 +160,7 @@ public class TestService {
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("F_ID");
-                String name = resultSet.getString("USERNAME");
+                String name = resultSet.getString("USERNAME").trim();
                 map.put(id, new TestObj(id,name));
             }
         } catch (SQLException e) {
