@@ -1,6 +1,7 @@
 package com.host.SpringBootGraalVMServer.service;
 
 import com.host.SpringBootGraalVMServer.model.ScriptPayload;
+import com.host.SpringBootGraalVMServer.model.TestObj;
 import lombok.extern.slf4j.Slf4j;
 import org.graalvm.polyglot.*;
 import org.springframework.stereotype.Service;
@@ -147,7 +148,7 @@ public class TestService {
         Statement statement = null;
         ResultSet resultSet = null;
 
-        Map<Integer,String> map = new HashMap<>();
+        Map<Integer,TestObj> map = new HashMap<>();
 
         try {
             connection =  connection = DriverManager.getConnection("jdbc:sqlserver://10.35.0.5;databaseName=naswms;encrypt=true;trustServerCertificate=true"
@@ -160,7 +161,7 @@ public class TestService {
             while (resultSet.next()) {
                 int id = resultSet.getInt("F_ID");
                 String name = resultSet.getString("USERNAME");
-                map.put(id,name);
+                map.put(id, new TestObj(id,name));
             }
         } catch (SQLException e) {
             e.printStackTrace();
