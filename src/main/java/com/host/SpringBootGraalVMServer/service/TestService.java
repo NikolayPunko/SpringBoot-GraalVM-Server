@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -136,6 +138,41 @@ public class TestService {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+
+    public String transferDB2(){
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        Map<Integer,String> map = new HashMap<>();
+
+        try {
+            connection =  connection = DriverManager.getConnection("jdbc:sqlserver://10.35.0.5;databaseName=naswms;encrypt=true;trustServerCertificate=true"
+                    , "nas"
+                    , "Nas2024$");
+            statement = connection.createStatement();
+            String sql = "SELECT * FROM BD_NASUSR";
+            resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("F_ID");
+                String name = resultSet.getString("USERNAME");
+                map.put(id,name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return map.toString();
         }
     }
 
