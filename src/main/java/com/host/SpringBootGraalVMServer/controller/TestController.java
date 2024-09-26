@@ -77,8 +77,8 @@ public class TestController {
             URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new File("/projects/graalvm_srv/SpringBoot-GraalVM-Server/src/main/java/com/host/SpringBootGraalVMServer/util").toURI().toURL()});
             Class<?> dynamicClass = classLoader.loadClass("DynamicClass");
             Object instance = dynamicClass.getDeclaredConstructor().newInstance();
-            Method method = dynamicClass.getMethod("transferDB3", String.class); // Предполагается, что метод называется "execute"
-            String str = (String) method.invoke(instance, "jdbc:sqlserver://10.35.0.5;databaseName=naswms;encrypt=true;trustServerCertificate=true");
+            Method method = dynamicClass.getMethod("test"); // Предполагается, что метод называется "execute"
+            String str = (String) method.invoke(instance);
             return "Метод execute() выполнен для класса: " + "DynamicClass" + "\n"+ str;
         } catch (Exception e) {
             e.printStackTrace();

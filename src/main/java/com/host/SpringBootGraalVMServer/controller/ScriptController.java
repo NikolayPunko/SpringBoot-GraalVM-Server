@@ -37,17 +37,30 @@ public class ScriptController {
         PythonConfiguration.assignSource();
     }
 
-    @PostMapping("/setform")
-    public ResponseEntity<?> addScriptFile(@RequestBody NewScriptDTO newScriptDTO){
-        try {
-            fileService.addScriptFile(newScriptDTO);
-        } catch (Exception e){
-            return ResponseEntity.badRequest().body("Ошибка добавления скрипта!");
-        }
-        return ResponseEntity.ok("Скрипт добавлен!");
+//    @PostMapping("/setform")
+//    public ResponseEntity<?> addScriptFile(@RequestBody NewScriptDTO newScriptDTO){
+//        try {
+//            fileService.addScriptFile(newScriptDTO);
+//        } catch (Exception e){
+//            return ResponseEntity.badRequest().body("Ошибка добавления скрипта!");
+//        }
+//        return ResponseEntity.ok("Скрипт добавлен!");
+//    }
+
+    @PostMapping("/addClass/{className}")
+    public String addClass(@PathVariable String className, @RequestBody String classCode) {
+        return fileService.addFile(className,classCode);
     }
 
+    @PostMapping("/compileClass/{className}")
+    public String compileClass(@PathVariable String className) {
+        return fileService.compileFile(className);
+    }
 
+    @GetMapping("/execute/{className}")
+    public String executeClass(@PathVariable String className) {
+        return fileService.executeClass(className,"main");
+    }
 
 
 }

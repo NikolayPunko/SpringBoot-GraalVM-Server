@@ -1,5 +1,4 @@
 
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +7,7 @@ import java.util.Map;
 
 public class DynamicClass {
 
-    public String transferDB3(String str){
+    public String main(){
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -16,11 +15,11 @@ public class DynamicClass {
         List<String> list = new ArrayList<>();
 
         try {
-            connection =  connection = DriverManager.getConnection(str
-                    , "nas"
-                    , "Nas2024$");
+            connection = DriverManager.getConnection("jdbc:sqlserver://10.35.0.10;databaseName=disp;encrypt=true;trustServerCertificate=true"
+                    , "web"
+                    , "Web2024$");
             statement = connection.createStatement();
-            String sql = "SELECT * FROM BD_NASUSR";
+            String sql = "SELECT * FROM NS_MC";
             resultSet = statement.executeQuery(sql);
 
             int columnCount = resultSet.getMetaData().getColumnCount();
@@ -30,8 +29,8 @@ public class DynamicClass {
                 Map<String,String> map = new HashMap<>();
 
                 for (int i = 0; i < columnCount; i++) {
-                    String col = resultSet.getMetaData().getColumnName(i+1);
-                    String val = resultSet.getString(i+1);
+                    String col = resultSet.getMetaData().getColumnName(i+1).trim();
+                    String val = resultSet.getString(i+1).trim();
                     map.put(col,val);
                 }
                 list.add(map.toString());
