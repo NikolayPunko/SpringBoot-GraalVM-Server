@@ -20,7 +20,7 @@ import java.util.Base64;
 @Service
 public class FileService {
 
-    private final String FILE_DIRECTORY = "/projects/graalvm_srv/SpringBoot-GraalVM-Server/src/main/resources/static/Scripts/"; //поменять путь под linux!!!
+    private final String FILE_DIRECTORY = "/projects/graalvm_srv/scripts/"; //поменять путь под linux!!!
 
 
     public String addFile(String className, String classCode) {

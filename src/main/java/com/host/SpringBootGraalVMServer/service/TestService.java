@@ -168,7 +168,7 @@ public class TestService {
 
                 for (int i = 0; i < columnCount; i++) {
                     String col = resultSet.getMetaData().getColumnName(i+1);
-                    String val = resultSet.getString(i+1);
+                    String val = resultSet.getObject(i+1)!=null?  resultSet.getString(i+1).trim() : "";
                     map.put(col,val);
                 }
                 list.add(map.toString());
