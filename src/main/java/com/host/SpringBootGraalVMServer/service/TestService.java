@@ -173,7 +173,7 @@ public class TestService {
                 }
                 list.add(map.toString());
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
