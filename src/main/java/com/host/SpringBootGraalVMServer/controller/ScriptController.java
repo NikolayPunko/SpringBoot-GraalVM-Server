@@ -47,20 +47,29 @@ public class ScriptController {
 //        return ResponseEntity.ok("Скрипт добавлен!");
 //    }
 
-    @PostMapping("/addClass/{className}")
-    public String addClass(@PathVariable String className, @RequestBody String classCode) {
-        return fileService.addFile(className,classCode);
-    }
+//    @PostMapping("/addClass/{className}")
+//    public String addClass(@PathVariable String className, @RequestBody String classCode) {
+//        return fileService.addFile(className, classCode);
+//    }
+//
+//    @PostMapping("/compileClass/{className}")
+//    public String compileClass(@PathVariable String className) {
+//        return fileService.compileFile(className);
+//    }
+//
+//    @GetMapping("/execute/{className}")
+//    public String executeClass(@PathVariable String className) {
+//        return fileService.executeClass(className, "main");
+//    }
 
-    @PostMapping("/compileClass/{className}")
-    public String compileClass(@PathVariable String className) {
-        return fileService.compileFile(className);
+    @PostMapping("/setform")
+    public ResponseEntity<?> addScriptFile(@RequestBody NewScriptDTO newScriptDTO) {
+        try {
+            fileService.addScriptFile(newScriptDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Ошибка добавления файла!");
+        }
+        return ResponseEntity.ok("Файл добавлен!");
     }
-
-    @GetMapping("/execute/{className}")
-    public String executeClass(@PathVariable String className) {
-        return fileService.executeClass(className,"main");
-    }
-
 
 }

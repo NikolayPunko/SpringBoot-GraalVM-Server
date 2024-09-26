@@ -120,7 +120,7 @@ public class TestService {
             context.eval(sourceFile1);
 
             Value function = context.getBindings("python").getMember("main"); //выбираем метод который нужен
-            ScriptPayload scriptPayload = function.execute(new ScriptPayload("req", "resp", connection)).as(ScriptPayload.class); //выполняем
+            ScriptPayload scriptPayload = function.execute(new ScriptPayload("req", "resp", "connection")).as(ScriptPayload.class); //выполняем
 
             return "Результат: " + scriptPayload.getResponse();
 

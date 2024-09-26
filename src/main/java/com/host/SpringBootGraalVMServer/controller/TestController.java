@@ -1,9 +1,11 @@
 package com.host.SpringBootGraalVMServer.controller;
 
-import com.host.SpringBootGraalVMServer.model.Person;
+import com.host.SpringBootGraalVMServer.model.ScriptPayload;
+import com.host.SpringBootGraalVMServer.service.FileService;
 import com.host.SpringBootGraalVMServer.service.ScriptServiceTest;
 import com.host.SpringBootGraalVMServer.service.TestService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +21,13 @@ public class TestController {
     private final ScriptServiceTest scriptServiceTest;
     private final TestService testService;
 
+    private final FileService fileService;
+
     @Autowired
-    public TestController(ScriptServiceTest scriptServiceTest, TestService testService) {
+    public TestController(ScriptServiceTest scriptServiceTest, TestService testService, FileService fileService) {
         this.scriptServiceTest = scriptServiceTest;
         this.testService = testService;
+        this.fileService = fileService;
     }
 
     @GetMapping(value = "/**")
@@ -33,20 +38,34 @@ public class TestController {
 
     @PostMapping(value = "/**")
     public String handlePostRequests(HttpServletRequest request,
-                                     @RequestBody Person person) {
+                                     @RequestBody ScriptPayload scriptPayload) {
 
-        System.out.println(request.getRequestURL());
+        String requestURI = request.getRequestURI();
+        String contextPath = request.getContextPath();
+        String partOfUrl = requestURI.substring(contextPath.length());
 
-        String requestURI = request.getRequestURI(); // Получаем полный URI
-        String contextPath = request.getContextPath(); // Получаем контекстный путь
-        String partOfUrl = requestURI.substring(contextPath.length()); // Получаем часть URL после хоста
-
-        System.out.println(requestURI);
         System.out.println(partOfUrl);
 
-        System.out.println("POST request intercepted!");
+        JSONObject jsonObject = new JSONObject(scriptPayload);
 
-        return "POST request intercepted!";
+        String className = defineFilename(partOfUrl);
+        String result = fileService.executeClass(className, "main", jsonObject.toString());
+
+        return "Результат выполнения: \n" + result;
+    }
+
+    public String defineFilename(String partOfUrl){
+        StringBuilder className = new StringBuilder();
+        String[] parts = partOfUrl.toString().split("/");
+        for (int i = 0; i < parts.length; i++) {
+            try {
+                parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1).toLowerCase();
+                className.append(parts[i]);
+            } catch (Exception e) {
+                continue;
+            }
+        }
+        return className.toString();
     }
 
 

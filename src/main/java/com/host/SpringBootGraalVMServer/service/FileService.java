@@ -12,52 +12,32 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Base64;
 
 @Slf4j
 @Service
 public class FileService {
 
-    private final String FILE_DIRECTORY = "/projects/graalvm_srv/scripts/"; //поменять путь под linux!!!
+    private final String FILE_DIRECTORY = "/projects/graalvm_srv/scripts/";
 
 
-    public String addFile(String className, String classCode) {
-        try {
-            // Сохраните код в файл
-            String filePath = FILE_DIRECTORY + className + ".java";
-            createFileAndWrite(filePath, classCode);
-
-
-            return "Класс успешно добавлен: " + className;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Ошибка добавления класса: " + e.getMessage();
-        }
-
-    }
-
-    public String compileFile(String className){
-
-        String filePath = FILE_DIRECTORY + className + ".java";
+    public void compileFile(String filePath){
 
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         int result = compiler.run(null, null, null, filePath);
         if (result != 0) {
-            return "Ошибка компиляции";
+            throw new RuntimeException("Ошибка компиляции " + filePath);
         }
 
-        return "Класс успешно скомпилирован: " + className;
     }
 
-    public String executeClass(String className, String methodName){
+    public String executeClass(String className, String methodName, String json){
         try {
             URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new File(FILE_DIRECTORY).toURI().toURL()});
             Class<?> dynamicClass = classLoader.loadClass(className);
             Object instance = dynamicClass.getDeclaredConstructor().newInstance();
-            Method method = dynamicClass.getMethod(methodName); // Предполагается, что метод называется "execute"
-            String str = (String) method.invoke(instance);
+            Method method = dynamicClass.getMethod(methodName, String.class);
+            String str = (String) method.invoke(instance, json);
             return "Метод " + methodName + " выполнен для класса: " + className + "\n"+ str;
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,27 +46,19 @@ public class FileService {
     }
 
 
-
-
-
-
-
-
-
-
     public void addScriptFile(NewScriptDTO newScript) throws IOException {
 
         String fileName = new StringBuilder()
-                .append(newScript.getFId())
-                .append(newScript.getPath())
+                .append(newScript.getName())
                 .append(".")
                 .append(newScript.getLang())
-                .toString()
-                .replace("/","_");
+                .toString();
+
 
         String encodedScript = decodedBase64(newScript.getScript());
 
         createFileAndWrite(FILE_DIRECTORY+fileName, encodedScript);
+        compileFile(FILE_DIRECTORY+fileName);
 
     }
 

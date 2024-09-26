@@ -12,10 +12,10 @@ import java.sql.Connection;
 @ToString
 public class ScriptPayload {
     @HostAccess.Export //требуется, чтобы сделать метод доступным из языка встраивания.
-    String request;
+    private String request;
     @HostAccess.Export //требуется, чтобы сделать метод доступным из языка встраивания.
-    String response;
+    private String response;
     @HostAccess.Export //требуется, чтобы сделать метод доступным из языка встраивания.
-    public Connection connection;
+    private String connection;
 
 }
