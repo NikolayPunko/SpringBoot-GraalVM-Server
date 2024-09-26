@@ -27,11 +27,11 @@ public class FileService {
         try {
             // Сохраните код в файл
             String filePath = FILE_DIRECTORY + className + ".java";
-            Files.write(Paths.get(filePath), classCode.getBytes());
+            createFileAndWrite(filePath, classCode);
 
 
             return "Класс успешно добавлен: " + className;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return "Ошибка добавления класса: " + e.getMessage();
         }
