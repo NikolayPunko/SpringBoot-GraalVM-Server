@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -22,9 +20,14 @@ public class FileService {
 
 
     public void compileFile(String filePath){
-
+        OutputStream outputStream = null;
+        try {
+             outputStream = new FileOutputStream("/projects/graalvm_srv/scripts/logCompile.log");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        int result = compiler.run(null, null, null, filePath);
+        int result = compiler.run(null, outputStream, outputStream, filePath);
         if (result != 0) {
             throw new RuntimeException("Ошибка компиляции " + filePath);
         }
