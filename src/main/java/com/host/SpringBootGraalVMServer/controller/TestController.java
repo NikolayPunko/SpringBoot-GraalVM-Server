@@ -49,6 +49,8 @@ public class TestController {
         JSONObject jsonObject = new JSONObject(scriptPayload);
 
         String className = defineFilename(partOfUrl);
+
+
         String result = fileService.executeClass(className, "main", jsonObject.toString());
 
         return "Результат выполнения: \n" + result;

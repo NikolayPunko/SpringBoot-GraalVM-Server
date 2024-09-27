@@ -1,18 +1,21 @@
 package com.host.SpringBootGraalVMServer.controller;
 
 import com.host.SpringBootGraalVMServer.dto.NewScriptDTO;
+import com.host.SpringBootGraalVMServer.dto.ResponseApp;
 import com.host.SpringBootGraalVMServer.model.Person;
 import com.host.SpringBootGraalVMServer.model.ScriptPayload;
 import com.host.SpringBootGraalVMServer.scriptConfiguration.PythonConfiguration;
 import com.host.SpringBootGraalVMServer.service.FileService;
 import com.host.SpringBootGraalVMServer.service.ScriptService;
 import com.host.SpringBootGraalVMServer.service.ScriptServiceTest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class ScriptController {
 
     private final ScriptServiceTest scriptServiceTest;
@@ -67,9 +70,11 @@ public class ScriptController {
         try {
             fileService.addScriptFile(newScriptDTO);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Ошибка добавления файла!");
+            log.error(e.toString());
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new ResponseApp("400","Ошибка добавления файла! " + e.getMessage()));
         }
-        return ResponseEntity.ok("Файл добавлен!");
+        return ResponseEntity.ok(new ResponseApp("ok",""));
     }
 
 }

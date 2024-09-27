@@ -40,6 +40,7 @@ public class FileService {
             String str = (String) method.invoke(instance, json);
             return "Метод " + methodName + " выполнен для класса: " + className + "\n"+ str;
         } catch (Exception e) {
+            log.error(e.toString());
             e.printStackTrace();
             return "Ошибка при выполнении: " + e.getMessage();
         }
