@@ -41,7 +41,7 @@ public class FileService {
             Object instance = dynamicClass.getDeclaredConstructor().newInstance();
             Method method = dynamicClass.getMethod(methodName, String.class);
             String str = (String) method.invoke(instance, json);
-            return "Метод " + methodName + " выполнен для класса: " + className + "\n"+ str;
+            return str;
         } catch (Exception e) {
             log.error(e.toString());
             e.printStackTrace();

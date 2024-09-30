@@ -53,7 +53,7 @@ public class TestController {
 
         String result = fileService.executeClass(className, "main", jsonObject.toString());
 
-        return "Результат выполнения: \n" + result;
+        return result;
     }
 
     public String defineFilename(String partOfUrl){
