@@ -38,20 +38,16 @@ public class TestController {
 
     @PostMapping(value = "/**")
     public String handlePostRequests(HttpServletRequest request,
-                                     @RequestBody ScriptPayload scriptPayload) {
+                                     @RequestBody String body) {
 
         String requestURI = request.getRequestURI();
         String contextPath = request.getContextPath();
         String partOfUrl = requestURI.substring(contextPath.length());
 
-        System.out.println(partOfUrl);
-
-        JSONObject jsonObject = new JSONObject(scriptPayload);
-
         String className = defineFilename(partOfUrl);
 
 
-        String result = fileService.executeClass(className, "main", jsonObject.toString());
+        String result = fileService.executeClass(className, "main", body);
 
         return result;
     }
