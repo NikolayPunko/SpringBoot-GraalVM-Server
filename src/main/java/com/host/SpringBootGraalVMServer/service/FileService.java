@@ -77,6 +77,7 @@ public class FileService {
     }
 
     private String decodedBase64(String encodedString){
+        encodedString = encodedString.replace("\r\n", "").replace("\r", "").replace("\n", "");
         byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
         return new String(decodedBytes);
     }
