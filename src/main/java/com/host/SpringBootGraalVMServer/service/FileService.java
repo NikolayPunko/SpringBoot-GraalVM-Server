@@ -12,12 +12,12 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Base64;
 
+
 @Slf4j
 @Service
 public class FileService {
 
     private final String FILE_DIRECTORY = "/projects/graalvm_srv/scripts/";
-
 
     public void compileFile(String filePath){
         OutputStream outputStream = null;
@@ -41,7 +41,7 @@ public class FileService {
             Object instance = dynamicClass.getDeclaredConstructor().newInstance();
             Method method = dynamicClass.getMethod(methodName, String.class);
             String str = (String) method.invoke(instance, json);
-            return str;
+            return "Метод " + methodName + " выполнен для класса: " + className + "\n"+ str;
         } catch (Exception e) {
             log.error(e.toString());
             e.printStackTrace();
@@ -77,11 +77,9 @@ public class FileService {
     }
 
     private String decodedBase64(String encodedString){
-        encodedString = encodedString.replace("\r\n", "").replace("\r", "").replace("\n", "");
         byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
         return new String(decodedBytes);
     }
-
 
 
 }

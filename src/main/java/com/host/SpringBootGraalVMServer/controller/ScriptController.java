@@ -77,4 +77,16 @@ public class ScriptController {
         return ResponseEntity.ok(new ResponseApp("ok",""));
     }
 
+//    @PostMapping("/compile")
+//    public ResponseEntity<?> compileFile(@RequestBody NewScriptDTO newScriptDTO) {
+//        try {
+//            fileService.compile(newScriptDTO);
+//        } catch (Exception e) {
+//            log.error(e.toString());
+//            e.printStackTrace();
+//            return ResponseEntity.badRequest().body(new ResponseApp("400","Ошибка компилирования файла! " + e.getMessage()));
+//        }
+//        return ResponseEntity.ok(new ResponseApp("ok",""));
+//    }
+
 }
