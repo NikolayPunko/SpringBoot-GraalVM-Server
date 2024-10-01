@@ -18,11 +18,13 @@ import java.util.Base64;
 public class FileService {
 
     private final String FILE_DIRECTORY = "/projects/graalvm_srv/scripts/";
+    private final String BC_DIRECTORY = "src/main/java/com/host/SpringBootGraalVMServer/bc/";
 
-    public void compileFile(String filePath){
+
+    public void compileFile(String filePath) {
         OutputStream outputStream = null;
         try {
-             outputStream = new FileOutputStream("/projects/graalvm_srv/scripts/logCompile.log");
+            outputStream = new FileOutputStream("/projects/graalvm_srv/scripts/logCompile.log");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -34,14 +36,14 @@ public class FileService {
 
     }
 
-    public String executeClass(String className, String methodName, String json){
+    public String executeClass(String className, String methodName, String json) {
         try {
             URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new File(FILE_DIRECTORY).toURI().toURL()});
             Class<?> dynamicClass = classLoader.loadClass(className);
             Object instance = dynamicClass.getDeclaredConstructor().newInstance();
             Method method = dynamicClass.getMethod(methodName, String.class);
             String str = (String) method.invoke(instance, json);
-            return "Метод " + methodName + " выполнен для класса: " + className + "\n"+ str;
+            return str;
         } catch (Exception e) {
             log.error(e.toString());
             e.printStackTrace();
@@ -61,13 +63,23 @@ public class FileService {
 
         String encodedScript = decodedBase64(newScript.getScript());
 
-        createFileAndWrite(FILE_DIRECTORY+fileName, encodedScript);
-        compileFile(FILE_DIRECTORY+fileName);
+        String directory = getDirectoryByType(newScript);
+
+        createFileAndWrite(directory + fileName, encodedScript);
+        compileFile(directory + fileName);
 
     }
 
-    private void createFileAndWrite(String path, String content){
-        try(FileOutputStream fileOutputStream = new FileOutputStream(path)){
+    public String getDirectoryByType(NewScriptDTO scriptDTO) {
+        return switch (scriptDTO.getType()) {
+            case "method" -> FILE_DIRECTORY;
+            case "bc" -> BC_DIRECTORY;
+            default -> throw new RuntimeException("Поле \"type\" не определено!");
+        };
+    }
+
+    private void createFileAndWrite(String path, String content) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(path)) {
             byte[] strToBytes = content.getBytes();
             fileOutputStream.write(strToBytes);
         } catch (IOException e) {
@@ -76,7 +88,7 @@ public class FileService {
         }
     }
 
-    private String decodedBase64(String encodedString){
+    private String decodedBase64(String encodedString) {
         byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
         return new String(decodedBytes);
     }
