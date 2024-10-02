@@ -4,12 +4,12 @@ import com.host.SpringBootGraalVMServer.dto.NewScriptDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
+import javax.tools.*;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
 import java.util.Base64;
 
 
@@ -21,7 +21,37 @@ public class FileService {
     private final String BC_DIRECTORY = "src/main/java/com/host/SpringBootGraalVMServer/bc/";
 
 
+    public void compileFile(String filePath, String fileName) {
+        // Получаем компилятор
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+
+        // Указываем путь к директории, где будут сохранены скомпилированные классы
+        String outputDir = "/projects/graalvm_srv/scripts/"; // Замените на нужный путь
+        new File(outputDir).mkdirs(); // Создаем директорию, если она не существует
+
+        try (StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null)) {
+            // Указываем целевую директорию для скомпилированных классов
+            fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(new File(outputDir)));
+
+            // Указываем файл с исходным кодом
+            Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(Arrays.asList(filePath));
+
+            // Компилируем
+            boolean success = compiler.getTask(null, fileManager, null, null, null, compilationUnits).call();
+
+            if (success) {
+                System.out.println("Compilation successful!");
+            } else {
+                System.out.println("Compilation failed.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void compileFile(String filePath) {
+//        System.out.println(System.getProperty("java.class.path"));
         OutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream("/projects/graalvm_srv/scripts/logCompile.log");
@@ -66,7 +96,8 @@ public class FileService {
         String directory = getDirectoryByType(newScript);
 
         createFileAndWrite(directory + fileName, encodedScript);
-        compileFile(directory + fileName);
+        compileFile(directory + fileName, fileName);
+//        compileFile(directory + fileName);
 
     }
 
