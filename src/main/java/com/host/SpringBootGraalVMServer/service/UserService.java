@@ -28,10 +28,12 @@ public class UserService {
         return usersRepository.findByUsername(username);
     }
 
-    private User getUserOrgDetails() {
+    public User getUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return userDetails.getPerson();
     }
+
+
 
 }

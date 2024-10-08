@@ -6,13 +6,14 @@ import com.host.SpringBootGraalVMServer.dto.UserDTO;
 import com.host.SpringBootGraalVMServer.exceptions.UserNotCreatedException;
 import com.host.SpringBootGraalVMServer.model.User;
 import com.host.SpringBootGraalVMServer.security.JWTUtil;
-import com.host.SpringBootGraalVMServer.service.PersonDetailsService;
+import com.host.SpringBootGraalVMServer.service.UserDetailsService;
 import com.host.SpringBootGraalVMServer.service.RegistrationService;
 import com.host.SpringBootGraalVMServer.util.UserValidator;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,7 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthenticationController(UserValidator userValidator, RegistrationService registrationService, JWTUtil jwtUtil, AuthenticationManager authenticationManager, PersonDetailsService personDetailsService) {
+    public AuthenticationController(UserValidator userValidator, RegistrationService registrationService, JWTUtil jwtUtil, AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
         this.userValidator = userValidator;
         this.registrationService = registrationService;
         this.jwtUtil = jwtUtil;
@@ -58,6 +59,7 @@ public class AuthenticationController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/registration")
     public ResponseEntity<LoginResponseDTO> performRegistration(@RequestBody @Valid UserDTO userDTO,
                                                                 BindingResult bindingResult) {

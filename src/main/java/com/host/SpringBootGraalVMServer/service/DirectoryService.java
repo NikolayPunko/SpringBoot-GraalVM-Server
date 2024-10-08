@@ -27,7 +27,7 @@ public class DirectoryService {
     @PostConstruct
     private void postConstruct() {
         for (NsSrvForm obj : nsSrvFormRepository.findAll()) {
-            NS_SRVFORM_MAP.put(obj.getPath().trim(), obj);
+            NS_SRVFORM_MAP.put(obj.getPath().trim(), obj.trim());
         }
     }
 

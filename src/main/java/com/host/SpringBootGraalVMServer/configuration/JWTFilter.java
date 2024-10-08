@@ -3,7 +3,7 @@ package com.host.SpringBootGraalVMServer.configuration;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.host.SpringBootGraalVMServer.repositories.UsersRepository;
 import com.host.SpringBootGraalVMServer.security.JWTUtil;
-import com.host.SpringBootGraalVMServer.service.PersonDetailsService;
+import com.host.SpringBootGraalVMServer.service.UserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,15 +25,15 @@ public class JWTFilter extends OncePerRequestFilter {
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final JWTUtil jwtUtil;
 
-    private final PersonDetailsService personDetailsService;
+    private final UserDetailsService userDetailsService;
 
     private final UsersRepository usersRepository;
 
     @Autowired
-    public JWTFilter(AuthenticationEntryPoint authenticationEntryPoint, JWTUtil jwtUtil, PersonDetailsService personDetailsService, UsersRepository usersRepository) {
+    public JWTFilter(AuthenticationEntryPoint authenticationEntryPoint, JWTUtil jwtUtil, UserDetailsService userDetailsService, UsersRepository usersRepository) {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.jwtUtil = jwtUtil;
-        this.personDetailsService = personDetailsService;
+        this.userDetailsService = userDetailsService;
         this.usersRepository = usersRepository;
     }
 
@@ -57,7 +57,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 try {
                     String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
 
-                    UserDetails userDetails = personDetailsService.loadUserByUsername(username);
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());

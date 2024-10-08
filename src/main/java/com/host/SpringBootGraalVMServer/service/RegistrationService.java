@@ -22,9 +22,8 @@ public class RegistrationService {
 
     @Transactional
     public void register(User user){
-
-        String encodedPassword = passwordEncoder.encode(user.getPassword()); //шифруем
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        usersRepository.save(user);
+//        usersRepository.save(user);
     }
 }

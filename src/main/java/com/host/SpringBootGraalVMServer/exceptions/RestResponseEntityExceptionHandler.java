@@ -31,7 +31,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<AppError> handleAccessDeniedException(Exception ex, WebRequest request) {
-        AppError response = new AppError("AccessDeniedException");
+        AppError response = new AppError("AccessDeniedException; " + ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -41,7 +41,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({UserNotFoundException.class})
     public ResponseEntity<AppError> handleUserOrgNotFoundException(Exception ex, WebRequest request) {
 
-        AppError response = new AppError("UserNotFoundException");
+        AppError response = new AppError("UserNotFoundException; ");
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -63,7 +63,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         AppError response = new AppError("UserNotCreatedException; " + ex.getMessage());
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }

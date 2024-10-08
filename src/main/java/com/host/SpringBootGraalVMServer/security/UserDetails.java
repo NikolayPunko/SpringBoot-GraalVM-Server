@@ -3,8 +3,12 @@ package com.host.SpringBootGraalVMServer.security;
 import com.host.SpringBootGraalVMServer.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
@@ -16,8 +20,13 @@ public class UserDetails implements org.springframework.security.core.userdetail
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public List<GrantedAuthority> getAuthorities() {
+        String prefix = "ROLE_";
+        List<GrantedAuthority> result = new ArrayList<>();
+        for (String role : user.getRole().trim().split(";")) {
+            result.add(new SimpleGrantedAuthority(prefix+role.toUpperCase()));
+        }
+        return result;
     }
 
     @Override
@@ -27,7 +36,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public String getUsername() {
-        return this.user.getUsername();
+        return this.user.getUsername().trim();
     }
 
     @Override
@@ -51,6 +60,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
     }
 
     public User getPerson(){
+        user.trim();
         return this.user;
     }
 }

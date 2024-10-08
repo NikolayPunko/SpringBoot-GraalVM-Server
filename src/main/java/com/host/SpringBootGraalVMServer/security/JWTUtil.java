@@ -17,24 +17,24 @@ import java.util.Date;
 public class JWTUtil {
 
     @Value("${jwt_secret}")
-    private String secret; //The secret key
+    private String secret;
 
     public String generateToken(String username) {
         Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(60*24*365*5).toInstant());
 
         return JWT.create()
-                .withSubject("User details")
+                .withSubject("Platform for development")
                 .withClaim("username", username)  //пары ключ значение
                 .withIssuedAt(new Date()) //когда выдан токен
-                .withIssuer("Spring-GraalVM-Server") //кто выдал токен, обычно название приложения
+                .withIssuer("Spring-Tool-Server") //кто выдал токен, обычно название приложения
                 .withExpiresAt(expirationDate) // срок годности
                 .sign(Algorithm.HMAC256(secret)); //секретная строка
     }
 
     public String validateTokenAndRetrieveClaim(String token) throws JWTVerificationException {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
-                .withSubject("User details")
-                .withIssuer("Spring-Bereza-Server")
+                .withSubject("Platform for development")
+                .withIssuer("Spring-Tool-Server")
                 .build();
         DecodedJWT jwt = verifier.verify(token);
 

@@ -2,8 +2,12 @@ package com.host.SpringBootGraalVMServer.service;
 
 import com.host.SpringBootGraalVMServer.model.ScriptPayload;
 import com.host.SpringBootGraalVMServer.model.TestObj;
+import com.host.SpringBootGraalVMServer.model.User;
+import com.host.SpringBootGraalVMServer.security.UserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.graalvm.polyglot.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,9 +23,6 @@ import java.util.Map;
 public class TestService {
 
 
-//    public String runScript(){
-//        return runScript1() +"\n" + runScript2();
-//    }
 
     public String runScript3(){
 
