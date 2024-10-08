@@ -24,7 +24,6 @@ public class RequestService {
     public void checkAccess(String partOfUrl){
         UserDetails userDetails = userDetailsService.getUserDetails();
         List<GrantedAuthority> authorities = userDetails.getAuthorities();
-        System.out.println(authorities);
         if(!authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
             authorities.retainAll(DirectoryService.NS_SRVFORM_MAP.get(partOfUrl).getRoleList());
             if(authorities.isEmpty()){
