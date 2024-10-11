@@ -77,5 +77,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 .body(response);
     }
 
+    @ExceptionHandler({DirectoryNotFoundException.class})
+    public ResponseEntity<AppError> handleDirectoryNotFoundException(Exception ex, WebRequest request) {
+        AppError response = new AppError("DirectoryNotFoundException; " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
 
 }

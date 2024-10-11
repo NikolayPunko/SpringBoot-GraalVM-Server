@@ -1,8 +1,6 @@
 package com.host.SpringBootGraalVMServer.scriptConfiguration;
 
 import com.host.SpringBootGraalVMServer.model.ScriptContext;
-import com.host.SpringBootGraalVMServer.service.PythonService;
-import com.host.SpringBootGraalVMServer.service.PythonServiceTest;
 import org.graalvm.polyglot.Source;
 
 import java.io.File;

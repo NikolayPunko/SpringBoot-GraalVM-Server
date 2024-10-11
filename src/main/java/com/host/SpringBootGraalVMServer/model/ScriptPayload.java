@@ -11,11 +11,9 @@ import java.sql.Connection;
 @Setter
 @ToString
 public class ScriptPayload {
-    @HostAccess.Export //требуется, чтобы сделать метод доступным из языка встраивания.
-    private String request;
-    @HostAccess.Export //требуется, чтобы сделать метод доступным из языка встраивания.
-    private String response;
-    @HostAccess.Export //требуется, чтобы сделать метод доступным из языка встраивания.
-    private String connection;
+
+    private String bodyReq;
+
+    private String gln;
 
 }
