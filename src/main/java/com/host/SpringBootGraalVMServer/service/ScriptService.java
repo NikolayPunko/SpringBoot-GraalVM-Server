@@ -1,7 +1,7 @@
 package com.host.SpringBootGraalVMServer.service;
 
 import com.host.SpringBootGraalVMServer.exceptions.DirectoryNotFoundException;
-import com.host.SpringBootGraalVMServer.model.ScriptPayload;
+import com.host.SpringBootGraalVMServer.model.Request;
 import com.host.SpringBootGraalVMServer.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +23,15 @@ public class ScriptService {
 
     public String executeFile(String className, String bodyReq){
 
-        ScriptPayload payload = buildPayload();
-        payload.setBodyReq(bodyReq);
+        Request payload = buildPayload();
+        payload.setBody(bodyReq);
 
         String result = fileService.executeClass(className, "main", payload);
         return result;
     }
 
-    private ScriptPayload buildPayload() {
-        ScriptPayload payload = new ScriptPayload();
+    private Request buildPayload() {
+        Request payload = new Request();
 
         User user = userDetailsService.getUserDetails().getPerson();
         String orgName = user.getOrgName();

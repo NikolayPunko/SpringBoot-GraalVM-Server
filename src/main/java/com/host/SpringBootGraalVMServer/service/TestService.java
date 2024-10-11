@@ -1,22 +1,7 @@
 package com.host.SpringBootGraalVMServer.service;
 
-import com.host.SpringBootGraalVMServer.model.ScriptPayload;
-import com.host.SpringBootGraalVMServer.model.TestObj;
-import com.host.SpringBootGraalVMServer.model.User;
-import com.host.SpringBootGraalVMServer.security.UserDetails;
 import lombok.extern.slf4j.Slf4j;
-import org.graalvm.polyglot.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.io.File;
-import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
