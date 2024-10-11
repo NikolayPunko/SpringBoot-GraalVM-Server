@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class Request {
+public class RequestObj {
 
     private String body;
 

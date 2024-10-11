@@ -1,7 +1,7 @@
 package com.host.SpringBootGraalVMServer.service;
 
 import com.host.SpringBootGraalVMServer.dto.NewScriptDTO;
-import com.host.SpringBootGraalVMServer.model.Request;
+import com.host.SpringBootGraalVMServer.model.RequestObj;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -67,12 +67,12 @@ public class FileService {
 
     }
 
-    public String executeClass(String className, String methodName, Request payload) {
+    public String executeClass(String className, String methodName, RequestObj payload) {
         try {
             URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new File(FILE_DIRECTORY).toURI().toURL()});
             Class<?> dynamicClass = classLoader.loadClass(className);
             Object instance = dynamicClass.getDeclaredConstructor().newInstance();
-            Method method = dynamicClass.getMethod(methodName, Request.class);
+            Method method = dynamicClass.getMethod(methodName, RequestObj.class);
             String str = (String) method.invoke(instance, payload);
             return str;
         } catch (Exception e) {

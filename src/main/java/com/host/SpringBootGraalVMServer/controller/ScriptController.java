@@ -29,10 +29,11 @@ public class ScriptController {
         this.requestService = requestService;
     }
 
-    @GetMapping("/runzap")
-    public ResponseEntity<?> runzap() {
-//        ScriptPayload result = scriptService.getmark();
-        return ResponseEntity.ok("result");
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/restartsrv")
+    public ResponseEntity<?> restartSrv(@RequestBody String string) {
+
+        return ResponseEntity.ok(new ResponseApp("ok",""));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
