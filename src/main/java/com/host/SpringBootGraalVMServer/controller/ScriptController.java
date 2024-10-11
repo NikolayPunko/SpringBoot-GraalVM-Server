@@ -2,7 +2,6 @@ package com.host.SpringBootGraalVMServer.controller;
 
 import com.host.SpringBootGraalVMServer.dto.NewScriptDTO;
 import com.host.SpringBootGraalVMServer.dto.ResponseApp;
-import com.host.SpringBootGraalVMServer.scriptConfiguration.PythonConfiguration;
 import com.host.SpringBootGraalVMServer.service.FileService;
 import com.host.SpringBootGraalVMServer.service.RequestService;
 import com.host.SpringBootGraalVMServer.service.ScriptService;

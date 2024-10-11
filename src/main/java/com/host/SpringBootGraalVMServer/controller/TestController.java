@@ -15,7 +15,6 @@ import java.net.URLClassLoader;
 @RestController
 public class TestController {
 
-    private final ScriptServiceTest scriptServiceTest;
     private final TestService testService;
 
     private final FileService fileService;
@@ -26,8 +25,7 @@ public class TestController {
 
 
     @Autowired
-    public TestController(ScriptServiceTest scriptServiceTest, TestService testService, FileService fileService, RequestService requestService, ScriptService scriptService) {
-        this.scriptServiceTest = scriptServiceTest;
+    public TestController(TestService testService, FileService fileService, RequestService requestService, ScriptService scriptService) {
         this.testService = testService;
         this.fileService = fileService;
         this.requestService = requestService;
