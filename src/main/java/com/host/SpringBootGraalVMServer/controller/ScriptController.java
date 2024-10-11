@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
 @Slf4j
 public class ScriptController {
 
@@ -30,14 +29,14 @@ public class ScriptController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/restartsrv")
+    @PostMapping("/api/restartsrv")
     public ResponseEntity<?> restartSrv(@RequestBody String string) {
 
         return ResponseEntity.ok(new ResponseApp("ok",""));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/setform")
+    @PostMapping("/api/setform")
     public ResponseEntity<?> addScriptFile(@RequestBody NewScriptDTO newScriptDTO) {
         try {
             fileService.addScriptFile(newScriptDTO);
