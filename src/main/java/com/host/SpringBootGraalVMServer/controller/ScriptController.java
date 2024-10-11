@@ -12,6 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 @RestController
 @Slf4j
 public class ScriptController {
@@ -31,6 +35,27 @@ public class ScriptController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/api/restartsrv")
     public ResponseEntity<?> restartSrv(@RequestBody String string) {
+
+        ProcessBuilder processBuilder = new ProcessBuilder();
+
+        // Укажите путь к вашему скрипту
+        processBuilder.command("bash", "-c", "/projects/graalvm_srv/restart.sh");
+
+        try {
+            Process process = processBuilder.start();
+
+            // Чтение вывода скрипта
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            int exitCode = process.waitFor();
+            System.out.println("Exited with code: " + exitCode);
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
 
         return ResponseEntity.ok(new ResponseApp("ok",""));
     }

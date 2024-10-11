@@ -37,7 +37,7 @@ public class ScriptService {
         String orgName = user.getOrgName();
 
         try {
-            String gln = DirectoryService.NS_WEBORG_MAP.get(orgName+"s").getGln();
+            String gln = DirectoryService.NS_WEBORG_MAP.get(orgName).getGln();
             payload.setGln(gln);
         } catch (Exception e){
             log.error(e.getMessage());
