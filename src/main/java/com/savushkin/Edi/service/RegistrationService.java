@@ -20,10 +20,10 @@ public class RegistrationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
-    public void register(User user){
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-//        usersRepository.save(user);
+
+    public String encryptPassword(String password){
+        String encodedPassword = passwordEncoder.encode(password);
+        return encodedPassword;
     }
+
 }

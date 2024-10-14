@@ -1,8 +1,6 @@
 package com.savushkin.Edi.controller;
 
-import com.savushkin.Edi.dto.LoginRequestDTO;
-import com.savushkin.Edi.dto.LoginResponseDTO;
-import com.savushkin.Edi.dto.UserDTO;
+import com.savushkin.Edi.dto.*;
 import com.savushkin.Edi.exceptions.UserNotCreatedException;
 import com.savushkin.Edi.model.User;
 import com.savushkin.Edi.security.JWTUtil;
@@ -13,7 +11,6 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
@@ -59,31 +56,12 @@ public class AuthenticationController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @PostMapping("/registration")
-    public ResponseEntity<LoginResponseDTO> performRegistration(@RequestBody @Valid UserDTO userDTO,
-                                                                BindingResult bindingResult) {
-        User user = convertToPerson(userDTO);
+    public ResponseEntity<RegistrationRespDTO> performRegistration(@RequestBody RegistrationReqDTO requestDTO) {
+        String encodedPassword = registrationService.encryptPassword(requestDTO.getPassword());
 
-        userValidator.validate(user, bindingResult);
-
-        if (bindingResult.hasErrors()){
-            StringBuilder errorMessage = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for(FieldError error: errors){
-                errorMessage.append(error.getField())
-                        .append(" - ")
-                        .append(error.getDefaultMessage())
-                        .append(";");
-            }
-
-            throw new UserNotCreatedException(errorMessage.toString());
-        }
-
-        registrationService.register(user);
-
-        String token = jwtUtil.generateToken(user.getUsername());
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return ResponseEntity.ok(new RegistrationRespDTO(encodedPassword));
     }
 
     private User convertToPerson(UserDTO userDTO) {
