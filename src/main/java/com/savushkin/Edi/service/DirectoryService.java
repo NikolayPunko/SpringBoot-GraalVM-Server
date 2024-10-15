@@ -1,5 +1,6 @@
 package com.savushkin.Edi.service;
 
+import com.savushkin.Edi.exceptions.DirectoryNotFoundException;
 import com.savushkin.Edi.model.directory.NsSrvForm;
 import com.savushkin.Edi.model.directory.NsWebOrg;
 import com.savushkin.Edi.repositories.NsSrvFormRepository;
@@ -40,6 +41,23 @@ public class DirectoryService {
         }
     }
 
+    public static NsSrvForm getNsSrvFormByKey(String key){
+        try {
+            return DirectoryService.NS_SRVFORM_MAP.get(key);
+        } catch (Exception e){
+            log.error(e.getMessage());
+            throw new DirectoryNotFoundException(String.format("Не удалось получить значения из справочника NS_SRVFORM по ключу %s", key));
+        }
+    }
+
+    public static NsWebOrg getNsWebOrgByKey(String key){
+        try {
+            return DirectoryService.NS_WEBORG_MAP.get(key);
+        } catch (Exception e){
+            log.error(e.getMessage());
+            throw new DirectoryNotFoundException(String.format("Не удалось получить значения из справочника NS_WEBORG по ключу %s", key));
+        }
+    }
 
 
 

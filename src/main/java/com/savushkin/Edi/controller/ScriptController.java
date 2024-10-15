@@ -38,13 +38,11 @@ public class ScriptController {
 
         ProcessBuilder processBuilder = new ProcessBuilder();
 
-        // Укажите путь к вашему скрипту
         processBuilder.command("bash", "-c", "/projects/graalvm_srv/restart.sh");
 
         try {
             Process process = processBuilder.start();
 
-            // Чтение вывода скрипта
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -82,7 +80,7 @@ public class ScriptController {
 
         String className = defineFilename(partOfUrl);
 
-        return scriptService.executeFile(className, body);
+        return scriptService.executeFile(partOfUrl, className, body);
     }
 
 

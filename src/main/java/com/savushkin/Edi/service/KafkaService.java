@@ -19,4 +19,5 @@ public class KafkaService {
     public void sendMessage(String message, String topicName) {
         kafkaTemplate.send(topicName, message);
     }
+
 }
