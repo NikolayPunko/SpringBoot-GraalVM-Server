@@ -3,6 +3,7 @@ package com.savushkin.Edi.controller;
 import com.savushkin.Edi.dto.NewScriptDTO;
 import com.savushkin.Edi.dto.ResponseApp;
 import com.savushkin.Edi.service.FileService;
+import com.savushkin.Edi.service.RedisService;
 import com.savushkin.Edi.service.RequestService;
 import com.savushkin.Edi.service.ScriptService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,13 +23,14 @@ public class ScriptController {
 
     private final ScriptService scriptService;
     private final FileService fileService;
-
+    private final RedisService redisService;
     private final RequestService requestService;
 
     @Autowired
-    public ScriptController(ScriptService scriptService, FileService fileService, RequestService requestService) {
+    public ScriptController(ScriptService scriptService, FileService fileService, RedisService redisService, RequestService requestService) {
         this.scriptService = scriptService;
         this.fileService = fileService;
+        this.redisService = redisService;
         this.requestService = requestService;
     }
 
@@ -55,7 +57,7 @@ public class ScriptController {
             e.printStackTrace();
         }
 
-        return ResponseEntity.ok(new ResponseApp("ok",""));
+        return ResponseEntity.ok(new ResponseApp("ok", ""));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -66,9 +68,14 @@ public class ScriptController {
         } catch (Exception e) {
             log.error(e.toString());
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(new ResponseApp("400","Ошибка добавления файла! " + e.getMessage()));
+            return ResponseEntity.badRequest().body(new ResponseApp("400", "Ошибка добавления файла! " + e.getMessage()));
         }
-        return ResponseEntity.ok(new ResponseApp("ok",""));
+        return ResponseEntity.ok(new ResponseApp("ok", ""));
+    }
+
+    @GetMapping(value = "/getresult/{id}")
+    public String getResult(@PathVariable String id) {
+        return redisService.findById(id);
     }
 
 

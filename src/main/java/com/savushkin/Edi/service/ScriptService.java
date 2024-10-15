@@ -29,11 +29,11 @@ public class ScriptService {
     public String executeFile(String partOfUrl, String className, String bodyReq) {
 
         String orgName = userDetailsService.getUserDetails().getPerson().getOrgName();
-        String executePlace = getExecutePlace(partOfUrl);
+        String execute = getExecutePlace(partOfUrl);
         String gln = getGln(orgName);
 
 
-        if (executePlace.equalsIgnoreCase("KAFKA")) {
+        if (execute.equalsIgnoreCase("KAFKA")) {
 
             String token = generateWebSrvToken();
 
@@ -52,10 +52,14 @@ public class ScriptService {
             payload.setBody(bodyReq);
             payload.setGln(gln);
 
-            String result = fileService.executeClass(className, "main", payload);
+            String result = executeClass(className, payload);
             return result;
         }
 
+    }
+
+    public String executeClass(String className, RequestObj requestObj){
+        return fileService.executeClass(className, "main", requestObj);
     }
 
 
