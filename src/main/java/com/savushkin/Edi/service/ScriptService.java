@@ -46,7 +46,7 @@ public class ScriptService {
             kafkaService.sendMessage(json.toString(),"websrv");
 
             JSONObject result = new JSONObject();
-            json.put("token", token);
+            result.put("token", token);
 
             return result.toString();
 
