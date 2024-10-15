@@ -73,7 +73,7 @@ public class ScriptController {
         return ResponseEntity.ok(new ResponseApp("ok", ""));
     }
 
-    @GetMapping(value = "/getresult/{id}")
+    @GetMapping(value = "/api/getresult/{id}")
     public ResponseEntity<?> getResult(@PathVariable String id) {
         String result = redisService.findById(id);
 
