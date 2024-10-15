@@ -85,14 +85,15 @@ public class ScriptController {
 
 
     @PostMapping(value = "/**")
-    public String handlePostRequests(HttpServletRequest request,
+    public ResponseEntity<?> handlePostRequests(HttpServletRequest request,
                                      @RequestBody String body) {
         String partOfUrl = requestService.getPartOfUrl(request);
         requestService.checkAccess(partOfUrl);
 
         String className = defineFilename(partOfUrl);
 
-        return scriptService.executeFile(partOfUrl, className, body);
+        String result = scriptService.executeFile(partOfUrl, className, body);
+        return ResponseEntity.ok(result);
     }
 
 
