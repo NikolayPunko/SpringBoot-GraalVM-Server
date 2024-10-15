@@ -77,7 +77,7 @@ public class ScriptController {
     public ResponseEntity<?> getResult(@PathVariable String id) {
         String result = redisService.findById(id);
 
-        if(result.isEmpty()){
+        if(result==null){
             return ResponseEntity.ok(new ResponseApp("proceeded", ""));
         }
         return ResponseEntity.ok(result);
