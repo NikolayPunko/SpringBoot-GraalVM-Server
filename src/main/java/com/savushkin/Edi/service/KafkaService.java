@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+
 @Slf4j
 @Service
 public class KafkaService {
@@ -18,6 +19,7 @@ public class KafkaService {
 
     public void sendMessage(String message, String topicName) {
         kafkaTemplate.send(topicName, message);
+        log.info("Producer отправляет сообщение в топик {} - {}", topicName, message);
     }
 
 }
