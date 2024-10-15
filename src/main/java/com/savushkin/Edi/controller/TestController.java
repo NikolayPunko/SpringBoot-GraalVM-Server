@@ -32,9 +32,7 @@ public class TestController {
 
     @GetMapping(value = "/test")
     public String test() {
-
-        System.out.println(DirectoryService.NS_SRVFORM_MAP.get("/disp/zttn").getRoleList());
-//        testService.test();
+        testService.test();
         return "OK";
     }
 
