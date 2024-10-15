@@ -9,6 +9,8 @@ import com.savushkin.Edi.service.ScriptService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -75,7 +77,13 @@ public class ScriptController {
 
     @GetMapping(value = "/api/getresult/{id}")
     public ResponseEntity<?> getResult(@PathVariable String id) {
+
+        long startTimeParsing = System.nanoTime();
         String result = redisService.findById(id);
+        long endTimeParsing = System.nanoTime();
+        Long durParsing = (endTimeParsing - startTimeParsing);
+        System.out.println(durParsing);
+
 
         if(result==null){
             return ResponseEntity.ok(new ResponseApp("proceeded", ""));
@@ -93,7 +101,10 @@ public class ScriptController {
         String className = defineFilename(partOfUrl);
 
         String result = scriptService.executeFile(partOfUrl, className, body);
-        return ResponseEntity.ok(result);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
     }
 
 
