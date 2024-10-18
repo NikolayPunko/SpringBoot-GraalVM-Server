@@ -122,5 +122,11 @@ public class ScriptController {
         return className.toString();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/classpath")
+    public String classpath() {
+        return System.getProperty("java.class.path");
+    }
+
 
 }

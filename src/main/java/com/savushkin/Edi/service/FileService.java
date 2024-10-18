@@ -3,6 +3,7 @@ package com.savushkin.Edi.service;
 import com.savushkin.Edi.dto.NewScriptDTO;
 import com.savushkin.Edi.model.RequestObj;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.tools.*;
@@ -20,6 +21,13 @@ public class FileService {
 
     private final String FILE_DIRECTORY = "/projects/graalvm_srv/scripts/";
     private final String BC_DIRECTORY = "src/main/java/com/savushkin/Edi/bc/";
+
+    private final BashService bashService;
+
+    @Autowired
+    public FileService(BashService bashService) {
+        this.bashService = bashService;
+    }
 
 
     public void compileFile(String filePath, String fileName) {
@@ -100,6 +108,7 @@ public class FileService {
 //        compileFile(directory + fileName, fileName);
         compileFile(directory + fileName);
 
+//        bashService.pushWebSrvScript( fileName);
     }
 
     public String getDirectoryByType(NewScriptDTO scriptDTO) {
@@ -124,6 +133,8 @@ public class FileService {
         byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
         return new String(decodedBytes);
     }
+
+
 
 
 }
