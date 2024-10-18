@@ -1,4 +1,4 @@
-package com.Edi;
+package com.savushkin.Edi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
