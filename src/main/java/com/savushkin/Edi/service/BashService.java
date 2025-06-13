@@ -19,12 +19,12 @@ public class BashService {
     }
 
 
-    public void pushWebSrvScript(String fileName){
+    public void pushWebSrvScript(String fileName, String directory){
 
         String username = userDetailsService.getUserDetails().getUsername();
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("/projects/graalvm_srv/pushWebSrvScript.sh", username, fileName);
+            ProcessBuilder processBuilder = new ProcessBuilder("/projects/graalvm_srv/pushWebSrvScript.sh", username, fileName, directory);
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
