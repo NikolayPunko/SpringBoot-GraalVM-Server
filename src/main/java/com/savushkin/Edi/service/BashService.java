@@ -2,6 +2,7 @@ package com.savushkin.Edi.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -12,6 +13,9 @@ import java.io.InputStreamReader;
 public class BashService {
 
     private final UserDetailsService userDetailsService;
+
+    @Value("${app.bash.gitea}")
+    private String BASH_GITEA_SCRIPT;
 
     @Autowired
     public BashService(UserDetailsService userDetailsService) {
@@ -24,7 +28,7 @@ public class BashService {
         String username = userDetailsService.getUserDetails().getUsername();
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("/projects/dynamic_srv/pushWebSrvScript.sh", username, fileName, directory);
+            ProcessBuilder processBuilder = new ProcessBuilder(BASH_GITEA_SCRIPT, username, fileName, directory);
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
