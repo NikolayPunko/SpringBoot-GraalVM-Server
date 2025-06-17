@@ -24,7 +24,7 @@ public class BashService {
         String username = userDetailsService.getUserDetails().getUsername();
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("/projects/graalvm_srv/pushWebSrvScript.sh", username, fileName, directory);
+            ProcessBuilder processBuilder = new ProcessBuilder("/projects/dynamic_srv/pushWebSrvScript.sh", username, fileName, directory);
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
