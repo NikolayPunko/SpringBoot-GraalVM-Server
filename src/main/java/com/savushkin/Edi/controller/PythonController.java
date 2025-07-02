@@ -29,7 +29,7 @@ public class PythonController {
             return ResponseEntity.ok(response);
         } catch (PyScriptException e) {
             return ResponseEntity.status(500)
-                    .body(new PyExecRespDTO(false, "", e.getMessage()));
+                    .body(new PyExecRespDTO(false, e.getOutput(), e.getMessage()));
         }
     }
 
@@ -40,10 +40,9 @@ public class PythonController {
             return ResponseEntity.ok(new PyExecRespDTO(true, result, ""));
         } catch (PyScriptException e) {
             return ResponseEntity.status(500)
-                    .body(new PyExecRespDTO(false, "", e.getMessage()));
+                    .body(new PyExecRespDTO(false, e.getOutput(), e.getMessage()));
         }
     }
-
 
 
 }

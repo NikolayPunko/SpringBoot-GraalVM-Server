@@ -36,14 +36,15 @@ public class PythonService {
 
             String output = readProcessOutput(process);
 
-            boolean finished = waitForProcess(process, 1, TimeUnit.MINUTES);
+            boolean finished = process.waitFor(1, TimeUnit.MINUTES);
+
             if (!finished) {
-                throw new PyScriptException("Script timed out");
+                throw new PyScriptException("Script timed out", output);
             }
 
             int exitCode = process.exitValue();
             if (exitCode != 0) {
-                throw new PyScriptException("Script failed with exit code: " + exitCode);
+                throw new PyScriptException("Script failed with exit code: " + exitCode, output);
             }
 
             return new PyExecRespDTO(true, output, "");
@@ -85,15 +86,11 @@ public class PythonService {
         return output.toString();
     }
 
-    private boolean waitForProcess(Process process, long timeout, TimeUnit unit) throws InterruptedException {
-        return process.waitFor(timeout, unit);
-    }
-
     public String createScript(PyCreateScriptDTO scriptDTO) {
         validateCreateRequest(scriptDTO);
         Path scriptPath = prepareScriptFile(scriptDTO);
         writeScriptContent(scriptPath, scriptDTO.getContent());
-        return "Script created successfully at: " + scriptPath;
+        return "Script created successfully at: " + scriptDTO.getFilename();
     }
 
     private void validateCreateRequest(PyCreateScriptDTO scriptDTO) {
