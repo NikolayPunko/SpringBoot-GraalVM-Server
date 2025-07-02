@@ -4,14 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Map;
-
 @Getter
 @Setter
 @ToString
-public class PythonScriptDTO {
+public class PyCreateScriptDTO {
 
-    private String path;
-//    private Map<String, String> params;
+    private String filename;
+    private String content;
 
 }
