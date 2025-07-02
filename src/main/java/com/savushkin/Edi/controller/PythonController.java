@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -34,8 +35,13 @@ public class PythonController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createAndExecuteScript(@RequestBody PyCreateScriptDTO scriptDTO) {
+    public ResponseEntity<?> createAndExecuteScript(@RequestPart("filename") String filename,
+                                                    @RequestPart("file") MultipartFile file) {
         try {
+            PyCreateScriptDTO scriptDTO = new PyCreateScriptDTO();
+            scriptDTO.setFilename(filename);
+            scriptDTO.setFile(file);
+
             String result = pythonService.createScript(scriptDTO);
             return ResponseEntity.ok(new PyExecRespDTO(true, result, ""));
         } catch (PyScriptException e) {

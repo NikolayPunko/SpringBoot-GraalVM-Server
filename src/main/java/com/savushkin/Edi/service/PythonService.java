@@ -6,6 +6,7 @@ import com.savushkin.Edi.exceptions.PyScriptException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -89,17 +90,21 @@ public class PythonService {
     public String createScript(PyCreateScriptDTO scriptDTO) {
         validateCreateRequest(scriptDTO);
         Path scriptPath = prepareScriptFile(scriptDTO);
-        writeScriptContent(scriptPath, scriptDTO.getContent());
+        writeScriptContent(scriptPath, scriptDTO.getFile());
         return "Script created successfully at: " + scriptDTO.getFilename();
     }
 
     private void validateCreateRequest(PyCreateScriptDTO scriptDTO) {
-        if (scriptDTO.getFilename() == null || scriptDTO.getContent() == null) {
-            throw new PyScriptException("Filename and content are required");
+        if (scriptDTO.getFilename() == null || scriptDTO.getFile() == null) {
+            throw new PyScriptException("Filename and file are required");
         }
 
         if (!scriptDTO.getFilename().endsWith(".py")) {
             throw new PyScriptException("Filename must have .py extension");
+        }
+
+        if (scriptDTO.getFile().isEmpty()) {
+            throw new PyScriptException("Uploaded file is empty");
         }
     }
 
@@ -112,21 +117,24 @@ public class PythonService {
         }
     }
 
-    private void writeScriptContent(Path path, String content) {
+    private void writeScriptContent(Path path, MultipartFile file) {
         try {
-            Files.write(path, content.getBytes(), StandardOpenOption.CREATE);
+            // Сохраняем загруженный файл
+            file.transferTo(path);
             setFilePermissions(path);
         } catch (IOException e) {
             throw new PyScriptException("Failed to write script file: " + e.getMessage());
         }
     }
 
-    private void setFilePermissions(Path path) throws IOException {
+    private void setFilePermissions(Path path) {
         try {
             Files.setPosixFilePermissions(path,
                     Set.of(OWNER_READ, OWNER_WRITE, OWNER_EXECUTE));
         } catch (UnsupportedOperationException e) {
             log.warn("Cannot set POSIX permissions on this system");
+        } catch (IOException e) {
+            throw new PyScriptException("Failed to set file permissions: " + e.getMessage());
         }
     }
 
