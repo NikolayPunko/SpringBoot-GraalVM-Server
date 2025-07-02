@@ -1,6 +1,7 @@
 package com.savushkin.Edi.service;
 
 import com.savushkin.Edi.dto.PyCreateScriptDTO;
+import com.savushkin.Edi.dto.PyExecReqDTO;
 import com.savushkin.Edi.dto.PyExecRespDTO;
 import com.savushkin.Edi.exceptions.PyScriptException;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +28,15 @@ public class PythonService {
     @Value("${app.directory.scripts}")
     private String SCRIPT_DIRECTORY;
 
-    public PyExecRespDTO executeScript(PyCreateScriptDTO scriptDTO) {
-        validateScriptPath(SCRIPT_DIRECTORY + scriptDTO.getFilename());
+    public PyExecRespDTO executeScript(PyExecReqDTO execReqDTO) {
+        validateScriptPath(SCRIPT_DIRECTORY + execReqDTO.getFilename());
 
         Process process = null;
         try {
-            String[] command = {"/bin/bash", "-c", "python3 " + SCRIPT_DIRECTORY + scriptDTO.getFilename()};
+
+
+            String[] command = {"/bin/bash", "-c", "python3 " + SCRIPT_DIRECTORY + execReqDTO.getFilename() + " " + String.join(" ", execReqDTO.getParameters())};
+            System.out.println();
             process = startProcess(command);
 
             String output = readProcessOutput(process);

@@ -1,5 +1,6 @@
 package com.savushkin.Edi.controller;
 
+import com.savushkin.Edi.dto.PyExecReqDTO;
 import com.savushkin.Edi.dto.PyExecRespDTO;
 import com.savushkin.Edi.dto.PyCreateScriptDTO;
 import com.savushkin.Edi.exceptions.PyScriptException;
@@ -24,9 +25,9 @@ public class PythonController {
     }
 
     @PostMapping("/exec")
-    public ResponseEntity<PyExecRespDTO> executeScript(@RequestBody PyCreateScriptDTO scriptDTO) {
+    public ResponseEntity<PyExecRespDTO> executeScript(@RequestBody PyExecReqDTO execReqDTO) {
         try {
-            PyExecRespDTO response = pythonService.executeScript(scriptDTO);
+            PyExecRespDTO response = pythonService.executeScript(execReqDTO);
             return ResponseEntity.ok(response);
         } catch (PyScriptException e) {
             return ResponseEntity.status(500)
