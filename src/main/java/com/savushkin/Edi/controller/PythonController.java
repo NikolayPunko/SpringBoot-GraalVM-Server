@@ -30,6 +30,7 @@ public class PythonController {
             PyExecRespDTO response = pythonService.executeScript(execReqDTO);
             return ResponseEntity.ok(response);
         } catch (PyScriptException e) {
+            log.error(e.toString());
             return ResponseEntity.status(500)
                     .body(new PyExecRespDTO(false, e.getOutput(), e.getMessage()));
         }
@@ -46,6 +47,7 @@ public class PythonController {
             String result = pythonService.createScript(scriptDTO);
             return ResponseEntity.ok(new PyExecRespDTO(true, result, ""));
         } catch (PyScriptException e) {
+            log.error(e.toString());
             return ResponseEntity.status(500)
                     .body(new PyExecRespDTO(false, e.getOutput(), e.getMessage()));
         }
