@@ -50,7 +50,7 @@ public class FileService {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         int result = compiler.run(null, outputStream, outputStream, "-classpath", classpath, filePath);
         if (result != 0) {
-            throw new RuntimeException("Ошибка компиляции " + filePath);
+            throw new RuntimeException("Compilation error " + filePath);
         }
 
     }
@@ -83,7 +83,7 @@ public class FileService {
         } catch (Exception e) {
             log.error(e.toString());
             e.printStackTrace();
-            return "Ошибка при выполнении: " + e.getMessage();
+            return "Error while running: " + e.getMessage();
         }
     }
 
@@ -112,7 +112,7 @@ public class FileService {
         return switch (scriptDTO.getType()) {
             case "method" -> SCRIPT_DIRECTORY;
             case "bc" -> BC_DIRECTORY;
-            default -> throw new RuntimeException("Поле \"type\" не определено!");
+            default -> throw new RuntimeException("The \"type\" field is not defined!");
         };
     }
 
@@ -121,7 +121,7 @@ public class FileService {
             byte[] strToBytes = content.getBytes();
             fileOutputStream.write(strToBytes);
         } catch (IOException e) {
-            log.error("Не удалось записать в файл {}", path);
+            log.error("Failed to write to file {}", path);
             throw new RuntimeException(e);
         }
     }

@@ -40,7 +40,7 @@ public class BashService {
             }
 
             int exitCode = process.waitFor();
-            log.info("Bash script exited with code: {}", exitCode);
+            log.info("Bash pushWebSrvScript exited with code: {}", exitCode);
 
         } catch (Exception e) {
             log.error(e.toString());

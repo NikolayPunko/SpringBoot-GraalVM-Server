@@ -1,5 +1,6 @@
 package com.savushkin.Edi.controller;
 
+import com.savushkin.Edi.model.directory.NsSrvForm;
 import com.savushkin.Edi.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 
 @ControllerAdvice
 @RestController
@@ -23,16 +26,17 @@ public class TestController {
 
     private final ScriptService scriptService;
 
+    private final DirectoryService directoryService;
+
 
     @Autowired
-    public TestController(TestService testService, FileService fileService, RequestService requestService, ScriptService scriptService) {
+    public TestController(TestService testService, FileService fileService, RequestService requestService, ScriptService scriptService, DirectoryService directoryService) {
         this.testService = testService;
         this.fileService = fileService;
         this.requestService = requestService;
         this.scriptService = scriptService;
+        this.directoryService = directoryService;
     }
-
-
 
 
 

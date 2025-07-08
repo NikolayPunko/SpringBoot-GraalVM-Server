@@ -71,7 +71,7 @@ public class ScriptService {
             return DirectoryService.NS_SRVFORM_MAP.get(partOfUrl).getExecute().trim();
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new DirectoryNotFoundException(String.format("Не удалось получить значения из справочника NS_SRVFORM по ключу %s", partOfUrl));
+            throw new DirectoryNotFoundException(String.format("Failed to get values from NS_SRVFORM directory for key %s", partOfUrl));
         }
     }
 
@@ -80,7 +80,7 @@ public class ScriptService {
             return DirectoryService.NS_WEBORG_MAP.get(orgName).getGln();
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new DirectoryNotFoundException(String.format("Не удалось получить значения из справочника NS_WEBORG по ключу %s", orgName));
+            throw new DirectoryNotFoundException(String.format("Failed to get values from NS_WEBORG directory for key %s", orgName));
         }
     }
 

@@ -54,9 +54,11 @@ public class ScriptController {
             }
 
             int exitCode = process.waitFor();
-            System.out.println("Exited with code: " + exitCode);
+            log.info("Exited with code: {}", exitCode);
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
+            log.error("Eror restartsrv: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
         return ResponseEntity.ok(new ResponseApp("ok", ""));
@@ -70,7 +72,7 @@ public class ScriptController {
         } catch (Exception e) {
             log.error(e.toString());
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(new ResponseApp("400", "Ошибка добавления файла! " + e.getMessage()));
+            return ResponseEntity.badRequest().body(new ResponseApp("400", "Error adding file! " + e.getMessage()));
         }
         return ResponseEntity.ok(new ResponseApp("ok", ""));
     }
