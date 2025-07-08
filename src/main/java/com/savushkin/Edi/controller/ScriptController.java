@@ -2,10 +2,7 @@ package com.savushkin.Edi.controller;
 
 import com.savushkin.Edi.dto.NewScriptDTO;
 import com.savushkin.Edi.dto.ResponseApp;
-import com.savushkin.Edi.service.FileService;
-import com.savushkin.Edi.service.RedisService;
-import com.savushkin.Edi.service.RequestService;
-import com.savushkin.Edi.service.ScriptService;
+import com.savushkin.Edi.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 @RestController
 @Slf4j
@@ -27,40 +21,21 @@ public class ScriptController {
     private final FileService fileService;
     private final RedisService redisService;
     private final RequestService requestService;
+    private final BashService bashService;
 
     @Autowired
-    public ScriptController(ScriptService scriptService, FileService fileService, RedisService redisService, RequestService requestService) {
+    public ScriptController(ScriptService scriptService, FileService fileService, RedisService redisService, RequestService requestService, BashService bashService) {
         this.scriptService = scriptService;
         this.fileService = fileService;
         this.redisService = redisService;
         this.requestService = requestService;
+        this.bashService = bashService;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/api/restartsrv")
     public ResponseEntity<?> restartSrv(@RequestBody String string) {
-
-        ProcessBuilder processBuilder = new ProcessBuilder();
-
-        processBuilder.command("bash", "-c", "/projects/graalvm_srv/restart.sh");
-
-        try {
-            Process process = processBuilder.start();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-
-            int exitCode = process.waitFor();
-            log.info("Exited with code: {}", exitCode);
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
-            log.error("Eror restartsrv: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
+        bashService.restartSrv();
         return ResponseEntity.ok(new ResponseApp("ok", ""));
     }
 

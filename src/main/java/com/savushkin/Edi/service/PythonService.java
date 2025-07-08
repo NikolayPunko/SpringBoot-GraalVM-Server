@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -36,7 +35,6 @@ public class PythonService {
 
 
             String[] command = {"/bin/bash", "-c", "python3 " + SCRIPT_DIRECTORY + execReqDTO.getFilename() + " " + String.join(" ", execReqDTO.getParameters())};
-            System.out.println();
             process = startProcess(command);
 
             String output = readProcessOutput(process);
