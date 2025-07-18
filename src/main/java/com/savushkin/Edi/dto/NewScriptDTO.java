@@ -7,7 +7,6 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 public class NewScriptDTO {
 
     @JsonProperty("F_ID")
@@ -18,4 +17,14 @@ public class NewScriptDTO {
     private String type;
     private String script;
 
+    @Override
+    public String toString() {
+        return "NewScriptDTO{" +
+                "type='" + type + '\'' +
+                ", lang='" + lang + '\'' +
+                ", name='" + name + '\'' +
+                ", path='" + path + '\'' +
+                ", fId=" + fId +
+                '}';
+    }
 }

@@ -35,7 +35,7 @@ public class ScriptController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/api/restartsrv")
     public ResponseEntity<?> restartSrv(@RequestBody String string) {
-        log.warn("Restarting server!");
+        log.warn("Restart srv req!");
         bashService.restartSrv();
         return ResponseEntity.ok(new ResponseApp("ok", ""));
     }
@@ -43,6 +43,7 @@ public class ScriptController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/api/setform")
     public ResponseEntity<?> addScriptFile(@RequestBody NewScriptDTO newScriptDTO) {
+        log.info("Script setform req: {}", newScriptDTO);
         try {
             fileService.addScriptFile(newScriptDTO);
         } catch (Exception e) {
@@ -54,7 +55,7 @@ public class ScriptController {
 
     @GetMapping(value = "/api/getresult/{id}")
     public ResponseEntity<?> getResult(@PathVariable String id) {
-
+        log.info("Script getresult req: {}", id);
         long startTimeParsing = System.nanoTime();
         String result = redisService.findById(id);
         long endTimeParsing = System.nanoTime();
@@ -71,6 +72,7 @@ public class ScriptController {
     @PostMapping(value = "/**")
     public ResponseEntity<?> handlePostRequests(HttpServletRequest request,
                                      @RequestBody String body) {
+        log.info("Script exec req: {}", body);
         String partOfUrl = requestService.getPartOfUrl(request);
         requestService.checkAccess(partOfUrl);
 

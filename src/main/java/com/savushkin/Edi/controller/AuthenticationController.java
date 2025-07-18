@@ -8,6 +8,7 @@ import com.savushkin.Edi.service.RegistrationService;
 import com.savushkin.Edi.service.UserDetailsService;
 import com.savushkin.Edi.util.UserValidator;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("api/authentication")
 public class AuthenticationController {
@@ -42,7 +44,7 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<LoginResponseDTO> performAuthentication(@RequestBody LoginRequestDTO loginRequestDto) {
-
+        log.info("Authenticate req: {}", loginRequestDto.getUsername());
 
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(),

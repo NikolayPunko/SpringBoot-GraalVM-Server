@@ -102,8 +102,10 @@ public class FileService {
         String directory = getDirectoryByType(newScript);
 
         createFileAndWrite(directory + fileName, encodedScript);
-//        compileFile(directory + fileName, fileName);
-        compileFile(directory + fileName);
+
+        if(newScript.getLang().equals("java")) {
+            compileFile(directory + fileName);
+        }
 
         bashService.pushWebSrvScript(fileName, directory);
     }

@@ -26,6 +26,7 @@ public class PythonController {
 
     @PostMapping("/exec")
     public ResponseEntity<PyExecRespDTO> executeScript(@RequestBody PyExecReqDTO execReqDTO) {
+        log.info("Python exec req: {}", execReqDTO);
         try {
             PyExecRespDTO response = pythonService.executeScript(execReqDTO);
             return ResponseEntity.ok(response);
@@ -39,6 +40,7 @@ public class PythonController {
     @PostMapping("/create")
     public ResponseEntity<?> createAndExecuteScript(@RequestPart("filename") String filename,
                                                     @RequestPart("file") MultipartFile file) {
+        log.info("Python create req deprecated: {}", filename);
         try {
             PyCreateScriptDTO scriptDTO = new PyCreateScriptDTO();
             scriptDTO.setFilename(filename);
