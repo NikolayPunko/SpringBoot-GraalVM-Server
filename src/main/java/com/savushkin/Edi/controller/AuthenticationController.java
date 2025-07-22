@@ -59,8 +59,9 @@ public class AuthenticationController {
 
 
 
-    @PostMapping("/registration")
+    @PostMapping("/encrypt-password")
     public ResponseEntity<RegistrationRespDTO> performRegistration(@RequestBody RegistrationReqDTO requestDTO) {
+        log.info("Encrypt password req.");
         String encodedPassword = registrationService.encryptPassword(requestDTO.getPassword());
 
         return ResponseEntity.ok(new RegistrationRespDTO(encodedPassword));

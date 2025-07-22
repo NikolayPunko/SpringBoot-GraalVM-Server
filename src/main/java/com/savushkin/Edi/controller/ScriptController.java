@@ -33,8 +33,8 @@ public class ScriptController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/api/restartsrv")
-    public ResponseEntity<?> restartSrv(@RequestBody String string) {
+    @GetMapping("/api/restartsrv")
+    public ResponseEntity<?> restartSrv() {
         log.warn("Restart srv req!");
         bashService.restartSrv();
         return ResponseEntity.ok(new ResponseApp("ok", ""));

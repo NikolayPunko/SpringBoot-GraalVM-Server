@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(HttpMethod.POST, "api/authentication/authenticate").permitAll()
-                                .requestMatchers(HttpMethod.POST, "api/authentication/registration").authenticated()
+                                .requestMatchers(HttpMethod.POST, "api/authentication/encrypt-password").authenticated()
                                 .anyRequest().authenticated()
                 )
 
