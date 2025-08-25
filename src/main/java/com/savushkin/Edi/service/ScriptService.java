@@ -70,7 +70,7 @@ public class ScriptService {
         try {
             return DirectoryService.NS_SRVFORM_MAP.get(partOfUrl).getExecute().trim();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(String.format("Failed to get values from NS_SRVFORM directory for key %s; ", partOfUrl) + e.getMessage());
             throw new DirectoryNotFoundException(String.format("Failed to get values from NS_SRVFORM directory for key %s", partOfUrl));
         }
     }
@@ -79,7 +79,7 @@ public class ScriptService {
         try {
             return DirectoryService.NS_WEBORG_MAP.get(orgName).getGln();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(String.format("Failed to get values from NS_WEBORG directory for key %s; ", orgName) + e.getMessage());
             throw new DirectoryNotFoundException(String.format("Failed to get values from NS_WEBORG directory for key %s", orgName));
         }
     }

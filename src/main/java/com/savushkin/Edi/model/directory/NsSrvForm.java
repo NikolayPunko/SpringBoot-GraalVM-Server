@@ -2,6 +2,7 @@ package com.savushkin.Edi.model.directory;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Slf4j
 public class NsSrvForm {
 
     @Id
@@ -44,12 +46,18 @@ public class NsSrvForm {
     private String role;
 
     public List<GrantedAuthority> getRoleList(){
-        String prefix = "ROLE_";
-        List<GrantedAuthority> roles = new ArrayList<>();
-        for (String role : getRole().split(";")) {
-            roles.add(new SimpleGrantedAuthority(prefix+role.toUpperCase()));
+        try {
+            String prefix = "ROLE_";
+            List<GrantedAuthority> roles = new ArrayList<>();
+            for (String role : getRole().split(";")) {
+                roles.add(new SimpleGrantedAuthority(prefix+role.toUpperCase()));
+            }
+            return roles;
+        } catch (Exception e){
+            log.error(e.getMessage());
+            throw new RuntimeException("Error getting role list");
         }
-        return roles;
+
     }
 
     public NsSrvForm trim(){
