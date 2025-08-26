@@ -32,7 +32,7 @@ public class ScriptController {
         this.bashService = bashService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @GetMapping("/api/restartsrv")
     public ResponseEntity<?> restartSrv() {
         log.warn("Restart srv req!");
@@ -40,7 +40,7 @@ public class ScriptController {
         return ResponseEntity.ok(new ResponseApp("ok", ""));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @PostMapping("/api/setform")
     public ResponseEntity<?> addScriptFile(@RequestBody NewScriptDTO newScriptDTO) {
         log.info("Script setform req: {}", newScriptDTO);
