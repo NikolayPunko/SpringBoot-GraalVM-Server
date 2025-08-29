@@ -32,6 +32,9 @@ public class User {
     @Column(name = "ORGNAME")
     private String orgName;
 
+    @Column(name = "LIFETIME")
+    private Integer lifeTime;
+
     public User(){
 
     }
