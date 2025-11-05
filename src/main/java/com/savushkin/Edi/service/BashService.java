@@ -21,7 +21,7 @@ public class BashService {
     @Value("${app.bash.gitea}")
     private String BASH_GITEA_SCRIPT;
 
-    @Value("${app.bash.gitea}")
+    @Value("${app.bash.restart}")
     private String BASH_RESTART_SCRIPT;
 
     @Autowired
@@ -59,7 +59,7 @@ public class BashService {
 
     public void restartSrv() {
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", BASH_RESTART_SCRIPT);
+            ProcessBuilder processBuilder = new ProcessBuilder("sudo", "bash", "-c", BASH_RESTART_SCRIPT);
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
@@ -68,7 +68,7 @@ public class BashService {
 
             int exitCode = process.waitFor();
 
-            if (exitCode != 0) {
+            if (exitCode != 143) {
                 log.error("Bash restartsrv script exited with error: {}", exitCode);
                 log.error(output);
                 throw new RuntimeException("Server restart error");
